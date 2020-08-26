@@ -1,0 +1,73 @@
+<!-- ============================================================== -->
+<!-- Simple four boxes Row -->
+<!-- ============================================================== -->
+<div fxLayout="row wrap">
+    <!-- column -->
+    <div fxFlex.gt-lg="66" fxFlex.gt-md="66" fxFlex.gt-xs="100" fxFlex="100">
+        <mat-card>
+            <mat-card-content>
+                <div class="d-flex flex-wrap">
+                    <div>
+                        <mat-card-title>File Text</mat-card-title>
+                        <mat-card-subtitle>Please choose your text file (.txt)</mat-card-subtitle>
+                    </div>
+
+
+                </div>
+
+                <label class="btn-sm btn-success border">
+                    <input type="file" multiple (change)="selectFiles($event)" />
+                </label>
+                <button mat-raised-button color="primary" (click)="uploadFiles()">Upload</button>
+                <button mat-raised-button color="primary" (click)="show()">Show</button>
+
+
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card>
+            <mat-card-content>
+                <div class="d-flex flex-wrap">
+                    <div>
+                        <mat-card-title>File HTML</mat-card-title>
+                        <mat-card-subtitle>You can choose option to filter text</mat-card-subtitle>
+                    </div>
+                </div>
+
+                <section class="example-section">
+                    <mat-checkbox class="example-margin mr-3" 
+                        (click)="clickFilter(i)"
+                        [(ngModel)]="service.filterWord[i].status"
+                        *ngFor="let item of service.filterWord  let i = index">
+                        {{item.text}}
+                    </mat-checkbox>
+                </section>
+
+
+                <hr>
+                {{service.textSegment}}
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <!-- column -->
+    <!-- column -->
+    <div fxFlex.gt-lg="33" fxFlex.gt-md="33" fxFlex.gt-xs="100" fxFlex="100">
+        <mat-card>
+            <mat-card-content>
+                <mat-card-title>Input File</mat-card-title>
+                <mat-card-subtitle>Different Devices Used to Visit</mat-card-subtitle>
+            </mat-card-content>
+            <hr>
+            <mat-card-content>
+                <mat-nav-list>
+                    <div *ngFor="let data of service.results;">
+                        <mat-list-item (click)="openFileSegment(data.fileName)">
+                            <a>{{ data.fileName }}</a>
+                        </mat-list-item>
+                    </div>
+                </mat-nav-list>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <!-- column -->
+</div>
