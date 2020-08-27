@@ -7,6 +7,7 @@ import { DashboardComponent } from './dashboard.component';
 import { DashboardRoutes } from './dashboard.routing';
 import { ChartistModule } from 'ng-chartist';
 import { FormsModule } from '@angular/forms';
+import { ColorPickerModule } from 'ngx-color-picker';
 @NgModule({
   imports: [
     CommonModule,
@@ -14,6 +15,7 @@ import { FormsModule } from '@angular/forms';
     FlexLayoutModule,
     ChartistModule,
     FormsModule,
+    ColorPickerModule,
     RouterModule.forChild(DashboardRoutes)
   ],
   declarations: [DashboardComponent]

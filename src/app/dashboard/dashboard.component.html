@@ -35,17 +35,29 @@
                 </div>
 
                 <section class="example-section">
-                    <mat-checkbox class="example-margin mr-3" 
-                        (click)="clickFilter(i)"
-                        [(ngModel)]="service.filterWord[i].status"
-                        *ngFor="let item of service.filterWord  let i = index">
-                        {{item.text}}
-                    </mat-checkbox>
+                    
+                    <span *ngFor="let item of service.filterWord  let i = index">
+
+                        <mat-checkbox class="example-margin ml-3 mr-1 " (click)="clickCheckboxFilter(i)"
+                            [(ngModel)]="service.filterWord[i].status">
+                        </mat-checkbox>
+                        <a  [style.color]="service.colorDict[item.name]" [(colorPicker)]="service.colorDict[item.name]"
+                            [cpOKButton]="true" [cpOKButtonText]="'Select'" [cpCancelButton]="true"
+                            [cpSaveClickOutside]="'false'" [cpDisableInput]="false" [cpAlphaChannel]="'disabled'"
+                            [cpOutputFormat]="'hex'" [cpPresetColors]="presetValues"
+                            [cpAddColorButton]="true"><span>{{item.text}}</span></a>
+
+                    </span>
+
                 </section>
 
-
                 <hr>
-                {{service.textSegment}}
+
+
+                {{service.chooseSegment}}
+
+
+
             </mat-card-content>
         </mat-card>
     </div>

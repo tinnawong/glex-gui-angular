@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ServiceApiService } from '../shared/service-api.service';
 import { HttpEventType, HttpResponse, HttpClient } from '@angular/common/http';
+import { ColorPickerService, Cmyk } from 'ngx-color-picker';
 
 @Component({
 	selector: 'app-dashboard',
@@ -18,14 +19,15 @@ export class DashboardComponent implements OnInit {
 	ngOnInit(): void {
 
 	}
-	selectedFiles!: FileList;
+	selectedFiles: FileList = null;
 	progressInfos = [];
 	message = '';
 	fileInfos!: Observable<any>;
 	bufferdata !: Array<any>
 	ch = true
 
-	selectFiles(event: any): void {
+	// ----------------------------start function uplaod--------------------------------------------
+	selectFiles(event): void {
 		this.progressInfos = [];
 		this.selectedFiles = event.target.files;
 	}
@@ -34,9 +36,9 @@ export class DashboardComponent implements OnInit {
 		const formData: FormData = new FormData();
 		formData.append('file', file);
 		this.http.post(`http://localhost:5200/glexSegment`, formData, {
-			reportProgress: true,
+			// reportProgress: true,
 		}).subscribe(data => {
-			console.log(data);
+			// console.log(data);
 			// var dicData: { [id: string]: any; } = {};
 			// dicData[file.name] = data;
 			this.service.results.push(data)
@@ -44,8 +46,7 @@ export class DashboardComponent implements OnInit {
 	}
 
 	uploadFiles(): void {
-
-		if (this.selectFiles.length > 0) {
+		if (this.selectedFiles.length != null) {
 			this.service.results = []
 			for (let i = 0; i < this.selectedFiles.length; i++) {
 				this.upload(i, this.selectedFiles[i]);
@@ -55,39 +56,64 @@ export class DashboardComponent implements OnInit {
 		}
 
 	}
+
+
+	// ------------------------end function uplaod---------------------------------------------
+
+	// ------------------------start funtion filter-----------------------------------------------------
+	
+	searchStatus(nameType){
+		for (let item in this.service.filterWord) {
+			if (String(item["name"]) == nameType) {
+				return item['status']
+				
+			}
+		}
+	}
+	
+	
+	filter() {
+		this.service.resultAfterFilter = null
+		this.service.chooseSegment.forEach(data => {
+			let nameType = this.service.dictCode[data[1]]
+			// if(this.service.filterWord)
+			// console.log(data)
+			
+			if(this.searchStatus(nameType)){
+				console.log(nameType)
+			}
+			
+
+		});
+	}
+
+
+
+
+
+	// index is index of filter word list
+	clickCheckboxFilter(index) {
+		this.filter()
+	}
+
+	// --------------------------end function filter-----------------------------------------
+
+	// select file from wep page
+	openFileSegment(fileName) {
+		for (let data of this.service.results) {
+			if (data.fileName == fileName) {
+				this.service.chooseSegment = data.results
+				this.filter()
+				break
+			}
+		}
+	}
+
 	show() {
 		// console.log(this.service.results)
 		console.log(this.ch)
 	}
 
-	// select file from wep page
-	openFileSegment(fileName) {
-		this.service.results.forEach(data => {
-			if (data.fileName == fileName) {
-				this.service.textSegment = data.results
-				this.filterFuntion()
-			}
-		});
-	}
-
-	filterFuntion() {
-		this.service.resultAfterFilter = null
-		this.service.textSegment.forEach(data => {
-			// data[1]
-			console.log(data)
-		});
-	}
-
-	// index is index of filter word list
-	clickFilter(index) {
-		// console.log(">>>",this.service.textSegment)
-		console.log("->>", this.service.textSegment)
-
-	}
-
-	filter() {
-
-	}
 
 
 
