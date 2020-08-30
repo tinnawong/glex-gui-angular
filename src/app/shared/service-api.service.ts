@@ -13,12 +13,36 @@ export class ServiceApiService implements OnInit {
 
   // for target all result from http json
   results = []
+  
+  resultsNumberType = {
+    UNKNOWN: 0,
+    KNOWN: 0,
+    AMBIGUOUS:0,
+    ENGLISH: 0,
+    DIGIT: 0,
+    SPECIAL: 0,
+    GROUP: 0,
+  }
+  resetSesultsNumberType() {
+      this.resultsNumberType = {
+      UNKNOWN: 0,
+      KNOWN: 0,
+      AMBIGUOUS:0,
+      ENGLISH: 0,
+      DIGIT: 0,
+      SPECIAL: 0,
+      GROUP: 0,
+    }
+  }
 
   // for get text segment after choose file from wep page
   chooseSegment: Array<any> = null
   // for get text segment after filter
   resultAfterFilter = []
 
+  statusFilter = false
+
+  fileNameOpenCurent ='text'
 
   filterWord = [
     { name: "UNKNOWN", status: true, text: "คำที่ไม่รู้จัก" },
@@ -29,7 +53,7 @@ export class ServiceApiService implements OnInit {
     { name: "SPECIAL", status: true, text: "อักขระพิเศษ" },
     { name: "GROUP", status: true, text: "เครื่องหมาย" },
   ]
-
+                                    
   resetFilterWord = [
     { name: "UNKNOWN", status: true, text: "คำที่ไม่รู้จัก" },
     { name: "KNOWN", status: true, text: "คำที่รู้จัก" },

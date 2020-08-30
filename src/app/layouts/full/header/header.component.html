@@ -1,8 +1,8 @@
-        
 <!-- ============================================================== -->
 <!-- Profile - style you can find in header.scss -->
 <!-- ============================================================== -->
-<button [matMenuTriggerFor]="profile" mat-icon-button class="m-r-5"> <img src="assets/images/users/1.jpg" alt="user" class="profile-pic"> </button>
+<!-- <button [matMenuTriggerFor]="profile" mat-icon-button class="m-r-5"> <img src="assets/images/users/1.jpg" alt="user" class="profile-pic"> </button>
+
 <mat-menu #profile="matMenu" class="mymegamenu">
     <button mat-menu-item>
         <mat-icon>settings</mat-icon> Settings </button>
@@ -12,5 +12,9 @@
         <mat-icon>notifications_off</mat-icon> Disable notifications </button>
     <button mat-menu-item>
         <mat-icon>exit_to_app</mat-icon> Sign Out </button>
-</mat-menu>
+</mat-menu> -->
 
+<div class="clearfix">
+    <span class="font-weight-bold mr-1">{{ datetime | date: "dd/MM/yyyy HH:mm" }}</span>
+    <span class="font-weight-light  ml-auto">{{ datetime | date: "ss" }}</span>
+</div>

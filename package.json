@@ -1,14 +1,16 @@
 {
-  "name": "material",
-  "version": "0.0.0",
+  "name": "glex",
+  "version": "0.0.1",
   "license": "MIT",
+  "main": "main.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "electron": "ng build && electron ."
   },
   "private": true,
   "dependencies": {
