@@ -1,33 +1,70 @@
 import { Injectable } from '@angular/core';
 import { OnInit } from '@angular/core';
-
+import { interval } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceApiService implements OnInit {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
+
+  pingMainServer_() {
+    this.http.get(this.urlPingMainServer, ).subscribe(
+      data => {
+        // console.log(data)
+        this.statusMainServer = true
+      },
+      err => {
+        // console.log(">>> err :",err)
+        this.statusMainServer = false
+      }
+    );
+  }
+  pingGlexServer_() {
+    this.http.get(this.urlGlexServer,).subscribe(
+      data => {
+        // console.log(data)
+        this.stautsGlexServer = true
+      },
+      err => {
+        // console.log(">>> err :",err)
+        this.stautsGlexServer = false
+      }
+    );
+  }
+
   ngOnInit() {
 
   }
 
+  urlglexMainService = 'http://localhost:5200/'
+  urlGlexSegment = this.urlglexMainService + 'glexSegment'
+  urlPingMainServer = this.urlglexMainService + "ping"
+  urlGlexServer = 'http://localhost:8080/ping'
+
+  statusMainServer = false
+  stautsGlexServer = false
+
+
   // for target all result from http json
   results = []
-  
+
   resultsNumberType = {
     UNKNOWN: 0,
     KNOWN: 0,
-    AMBIGUOUS:0,
+    AMBIGUOUS: 0,
     ENGLISH: 0,
     DIGIT: 0,
     SPECIAL: 0,
     GROUP: 0,
   }
+
   resetSesultsNumberType() {
-      this.resultsNumberType = {
+    this.resultsNumberType = {
       UNKNOWN: 0,
       KNOWN: 0,
-      AMBIGUOUS:0,
+      AMBIGUOUS: 0,
       ENGLISH: 0,
       DIGIT: 0,
       SPECIAL: 0,
@@ -42,7 +79,7 @@ export class ServiceApiService implements OnInit {
 
   statusFilter = false
 
-  fileNameOpenCurent ='text'
+  fileNameOpenCurent = 'text'
 
   filterWord = [
     { name: "UNKNOWN", status: true, text: "คำที่ไม่รู้จัก" },
@@ -53,7 +90,7 @@ export class ServiceApiService implements OnInit {
     { name: "SPECIAL", status: true, text: "อักขระพิเศษ" },
     { name: "GROUP", status: true, text: "เครื่องหมาย" },
   ]
-                                    
+
   resetFilterWord = [
     { name: "UNKNOWN", status: true, text: "คำที่ไม่รู้จัก" },
     { name: "KNOWN", status: true, text: "คำที่รู้จัก" },

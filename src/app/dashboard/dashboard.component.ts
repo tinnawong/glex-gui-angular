@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, interval } from 'rxjs';
+import { Observable, interval, from } from 'rxjs';
 import { ServiceApiService } from '../shared/service-api.service';
 import { HttpClient } from '@angular/common/http';
 import { ColorPickerService, Cmyk } from 'ngx-color-picker';
 import { FixedSizeVirtualScrollStrategy, VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
-
 @Component({
 	selector: 'app-dashboard',
 	templateUrl: './dashboard.component.html',
@@ -19,13 +18,16 @@ export class DashboardComponent implements OnInit {
 
 
 	ngOnInit(): void {
+		interval(1500).subscribe(x => {
+			this.service.pingMainServer_()
+			this.service.pingGlexServer_()		
+		  });
 	}
 
-	products = ['sfds', "sdfdsf"]
 	selectedFiles: FileList = null;
 	progressInfos = [];
+	
 
-	items = Array.from({ length: 100000 }).map((_, i) => `Item #${i}`);
 	// ----------------------------start function uplaod--------------------------------------------
 	selectFiles(event): void {
 		this.progressInfos = [];
@@ -35,7 +37,7 @@ export class DashboardComponent implements OnInit {
 	upload(idx: number, file: File): void {
 		const formData: FormData = new FormData();
 		formData.append('file', file);
-		this.http.post(`http://localhost:5200/glexSegment`, formData, {
+		this.http.post(this.service.urlGlexSegment, formData, {
 			// reportProgress: true,
 		}).subscribe(data => {
 			// console.log(data);

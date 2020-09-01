@@ -18,6 +18,6 @@ import { ColorPickerModule } from 'ngx-color-picker';
     ColorPickerModule,
     RouterModule.forChild(DashboardRoutes)
   ],
-  declarations: [DashboardComponent]
+  declarations: [DashboardComponent,]
 })
 export class DashboardModule {}
