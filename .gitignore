@@ -1,6 +1,7 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 /glex-win32-x64
 glex-win32-x64/glex.exe
+
 # compiled output
 /dist
 /tmp
