@@ -1,0 +1,7 @@
+{
+    "startProgram":"start dir /F",
+    "startGoService":"@cd glexService && @start \"glex server(golang)\" glexService.exe",
+    "startMainService":"@C: && cd C:/tin work/glex-service-python/dist/main service && @start \"main server(python)\" run.exe",
+    "killMainService":"taskkill /FI \"WindowTitle eq main server(python)*\" /T /F",
+    "killGlexService":"taskkill /FI \"WindowTitle eq glex server(golang)*\" /T /F"
+}

@@ -11,7 +11,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "electron": "ng build && electron .",
-    "packager":"electron-packager ."
+    "packager":"electron-packager . --overwrite --out=C:/installer"
   },
   "private": true,
   "dependencies": {
