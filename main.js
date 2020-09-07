@@ -95,6 +95,7 @@ function closeService() {
 function trimString(x) {
   return x.replace(/^\s+|\s+$/gm, '');
 }
+
 function startCommand() {
   if (trimString(setup.startProgram) != "") {
     try {
@@ -117,6 +118,7 @@ function startCommand() {
   }
 
 }
+
 function initWindow() {
   appWindow = new BrowserWindow({
     width: 1500,
@@ -138,26 +140,24 @@ function initWindow() {
   startService()
   // command for first time start
   startCommand()
-  
+
   // Initialize the DevTools.
   // appWindow.webContents.openDevTools()
-
-  appWindow.on('closed', function () {
-    closeService()
-    appWindow = null
-  })
-
 }
+
+app.on('closed', function (event) {
+  appWindow = null
+})
+
 
 app.on('ready', initWindow)
 
 // Close when all windows are closed.
 app.on('window-all-closed', function () {
   // On macOS specific close process
-  app.quit
-  // if (process.platform !== 'darwin') {
-  //   app.quit()
-  // }
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
 })
 
 app.on('activate', function () {
@@ -167,6 +167,7 @@ app.on('activate', function () {
 })
 
 app.on('before-quit', () => {
-  appWindow.removeAllListeners('close');
-  appWindow.close();
+  closeService()
+  app.removeAllListeners('close');
+  app.close();
 });

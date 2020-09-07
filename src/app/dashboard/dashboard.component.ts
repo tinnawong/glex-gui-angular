@@ -43,7 +43,12 @@ export class DashboardComponent implements OnInit {
 			// console.log(data);
 			// var dicData: { [id: string]: any; } = {};
 			// dicData[file.name] = data;
-			this.service.results.push(data)
+			if(data['status']=='ok'){
+				this.service.results.push(data)
+			}else{
+				alert(data['message'])
+			}
+			
 		});
 	}
 
