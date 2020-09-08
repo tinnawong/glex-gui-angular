@@ -8,26 +8,33 @@
         <mat-card>
             <mat-card-content>
                 <div class="clearfix">
-                    <div class="float-right"> 
+                    <div class="float-right">
 
-                        <div *ngIf="service.statusMainServer ; else statusMainFalse" class="text-success">*status main service</div>
-                        <ng-template #statusMainFalse><div  class="text-danger">*status main service</div></ng-template>
+                        <div *ngIf="service.statusMainServer ; else statusMainFalse" class="text-success">*status main
+                            service</div>
+                        <ng-template #statusMainFalse>
+                            <div class="text-danger">*status main service</div>
+                        </ng-template>
 
-                        <div *ngIf="service.stautsGlexServer ; else statusGlexFalse" class="text-success">*status glex service</div>
-                        <ng-template #statusGlexFalse ><div class="text-danger">*status glex service</div></ng-template>
+                        <div *ngIf="service.stautsGlexServer ; else statusGlexFalse" class="text-success">*status glex
+                            service</div>
+                        <ng-template #statusGlexFalse>
+                            <div class="text-danger">*status glex service</div>
+                        </ng-template>
 
                     </div>
                 </div>
                 <div class="d-flex flex-wrap">
                     <div>
                         <mat-card-title>Input Text File</mat-card-title>
-                        <mat-card-subtitle>Please choose your text file (.txt)</mat-card-subtitle>
+                        <mat-card-subtitle>Please choose your text file or drag and drop (.txt)</mat-card-subtitle>
                     </div>
                 </div>
-                <label class="btn-sm btn-success border">
-                    <input type="file" multiple (change)="selectFiles($event)" />
+                <label class="btn-sm  border" style="background-color: #dee2e6">
+                    <input type="file"  accept=".txt" multiple (change)="selectFiles($event)" />
                 </label>
-                <button mat-raised-button color="primary" (click)="uploadFiles()">Upload</button>
+                <button *ngIf="selectedFiles && selectedFiles.length>0" mat-raised-button color="primary"
+                    (click)="uploadFiles()">Upload</button>
             </mat-card-content>
         </mat-card>
 
@@ -57,8 +64,14 @@
                     <div>
                         <mat-card-title>File HTML</mat-card-title>
                         <mat-card-subtitle>You can choose option and filter <span
-                                class="font-weight-bold">{{service.fileNameOpenCurent}}</span> file</mat-card-subtitle>
+                                class="font-weight-bold">{{service.fileNameOpenCurent}}</span> file
+                            <div>จำนวนคำทั้งหมดไม่รวมเว้นวรรค <span class="font-weight-bold">{{service.numSeg}}</span>
+                                คำ</div>
+                            <div>จำนวนคำทั้งหมดรวมเว้นวรรค <span
+                                    class="font-weight-bold">{{service.numSegSumSpace}}</span> คำ</div>
+                        </mat-card-subtitle>
                     </div>
+
                 </div>
                 <section class="example-section">
                     <section class="example-section">
@@ -70,7 +83,7 @@
                                 [(colorPicker)]="service.colorDict[item.name]" [cpOKButton]="true"
                                 [cpOKButtonText]="'Select'" [cpCancelButton]="true" [cpSaveClickOutside]="'false'"
                                 [cpDisableInput]="false" [cpAlphaChannel]="'disabled'" [cpOutputFormat]="'hex'"
-                                [cpAddColorButton]="true"><span>{{item.text}}
+                                [cpAddColorButton]="true" style="cursor: pointer"><span>{{item.text}}
                                     ({{service.resultsNumberType[item.name]}})</span></a>
                         </span>
                     </section>
@@ -80,15 +93,12 @@
                         <button mat-raised-button color="primary" class="float-right mt-3 mr-2"
                             (click)="resetFilterWord()">Reset Filter</button>
 
-                        <button *ngIf="service.statusFilter" mat-raised-button color="primary"
-                            class="float-right mt-3 mr-1 " (click)="writeFileHtml()">Download Html</button>
-                        <button *ngIf="!service.statusFilter" mat-raised-button color="warn"
+                        <button *ngIf="service.statusFilter" mat-raised-button style="background:#8BF268;"
                             class="float-right mt-3 mr-1 " (click)="writeFileHtml()">Download Html</button>
 
-                        <button *ngIf="service.statusFilter" mat-raised-button color="primary"
+                        <button *ngIf="service.statusFilter" mat-raised-button style="background: #8BF268;"
                             class="float-right mt-3 mr-1 " (click)="writeFileText()">Download Text</button>
-                        <button *ngIf="!service.statusFilter" mat-raised-button color="warn"
-                            class="float-right mt-3 mr-1 " (click)="writeFileText()">Download Text</button>
+
 
                     </section>
                     <hr>

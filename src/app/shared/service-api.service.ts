@@ -46,7 +46,6 @@ export class ServiceApiService implements OnInit {
   statusMainServer = false
   stautsGlexServer = false
 
-
   // for target all result from http json
   results = []
 
@@ -74,8 +73,10 @@ export class ServiceApiService implements OnInit {
 
   // for get text segment after choose file from wep page
   chooseSegment: Array<any> = null
-  // for get text segment after filter
+  // for get text segment after filter and number of word segment
   resultAfterFilter = []
+  numSeg=0
+  numSegSumSpace=0
 
   statusFilter = false
 

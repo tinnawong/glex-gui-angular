@@ -18,15 +18,17 @@ export class DashboardComponent implements OnInit {
 
 
 	ngOnInit(): void {
-		interval(1500).subscribe(x => {
+		this.service.pingMainServer_()
+		this.service.pingGlexServer_()
+		interval(5000).subscribe(x => {
 			this.service.pingMainServer_()
-			this.service.pingGlexServer_()		
-		  });
+			this.service.pingGlexServer_()
+		});
 	}
 
 	selectedFiles: FileList = null;
 	progressInfos = [];
-	
+
 
 	// ----------------------------start function uplaod--------------------------------------------
 	selectFiles(event): void {
@@ -43,23 +45,27 @@ export class DashboardComponent implements OnInit {
 			// console.log(data);
 			// var dicData: { [id: string]: any; } = {};
 			// dicData[file.name] = data;
-			if(data['status']=='ok'){
+			if (data['status'] == 'ok') {
 				this.service.results.push(data)
-			}else{
+			} else {
 				alert(data['message'])
 			}
-			
+
 		});
 	}
 
 	uploadFiles(): void {
-		if (this.selectedFiles.length != null) {
-			this.service.results = []
-			for (let i = 0; i < this.selectedFiles.length; i++) {
-				this.upload(i, this.selectedFiles[i]);
+		if(this.service.statusMainServer && this.service.stautsGlexServer){
+			if (this.selectedFiles.length != null) {
+				this.service.results = []
+				for (let i = 0; i < this.selectedFiles.length; i++) {
+					this.upload(i, this.selectedFiles[i]);
+				}
+			} else {
+				alert("Please choose file")
 			}
-		} else {
-			alert("Please choose file")
+		}else{
+			alert("Can not connect service")
 		}
 
 	}
@@ -83,6 +89,8 @@ export class DashboardComponent implements OnInit {
 			this.service.statusFilter = true
 			this.service.resultAfterFilter = []
 			let dicData
+			this.service.numSegSumSpace = 0
+			this.service.numSeg = 0
 			// reset number each type of segment
 			this.service.resetSesultsNumberType()
 
@@ -101,8 +109,15 @@ export class DashboardComponent implements OnInit {
 				this.service.resultAfterFilter.push(dicData)
 				this.service.resultsNumberType[nameType] += 1
 
+				if (data[0].trim() != "") {
+					this.service.numSeg += 1
+				}
+				this.service.numSegSumSpace += 1
+
+
 
 			});
+
 		}
 	}
 
@@ -150,7 +165,11 @@ export class DashboardComponent implements OnInit {
 			GROUP: "#FF14F3",
 			notShow: "#B7B7B7"
 		}
-		this.service.statusFilter = true
+
+		if (this.service.chooseSegment != null) {
+			this.service.statusFilter = true
+		}
+		this.filter()
 	}
 
 	writeFileText() {
@@ -158,7 +177,7 @@ export class DashboardComponent implements OnInit {
 		if (this.service.statusFilter && this.service.resultAfterFilter != null) {
 			let text = '';
 			this.service.resultAfterFilter.forEach(element => {
-				if ((element["setColor"] != "notShow") && (element.data[0] != " ")) {
+				if ((element["setColor"] != "notShow") && (element.data[0].trim() != "")) {
 					text += element.data[0] + "\n";
 				}
 
@@ -253,7 +272,7 @@ export class DashboardComponent implements OnInit {
 				<hr>
 			</div>`
 			this.service.resultAfterFilter.forEach(element => {
-				if ((element["setColor"] != "notShow") && (element.data[0] != " ")) {
+				if ((element["setColor"] != "notShow") && (element.data[0].trim() != "")) {
 					html += `<span class="TEXT-` + this.service.dictCode[element.data[1]] + `">` + element.data[0] + `</span>`
 				}
 
