@@ -10,17 +10,17 @@
                 <div class="clearfix">
                     <div class="float-right">
 
-                        <div *ngIf="service.statusMainServer ; else statusMainFalse" class="text-success">*status main
-                            service</div>
+                        <div *ngIf="service.statusMainServer ; else statusMainFalse" class="text-success-d">*status main service</div>
                         <ng-template #statusMainFalse>
                             <div class="text-danger">*status main service</div>
                         </ng-template>
 
-                        <div *ngIf="service.stautsGlexServer ; else statusGlexFalse" class="text-success">*status glex
-                            service</div>
+                        <div *ngIf="service.stautsGlexServer ; else statusGlexFalse" class="text-success-d">*status glex service</div>
                         <ng-template #statusGlexFalse>
                             <div class="text-danger">*status glex service</div>
                         </ng-template>
+
+                       
 
                     </div>
                 </div>
@@ -31,10 +31,11 @@
                     </div>
                 </div>
                 <label class="btn-sm  border" style="background-color: #dee2e6">
-                    <input type="file"  accept=".txt" multiple (change)="selectFiles($event)" />
+                    <input type="file" accept=".txt" multiple (change)="selectFiles($event)" />
                 </label>
                 <button *ngIf="selectedFiles && selectedFiles.length>0" mat-raised-button color="primary"
-                    (click)="uploadFiles()">Upload</button>
+                    (click)="uploadFiles()">Upload</button>       
+
             </mat-card-content>
         </mat-card>
 
@@ -65,6 +66,8 @@
                         <mat-card-title>File HTML</mat-card-title>
                         <mat-card-subtitle>You can choose option and filter <span
                                 class="font-weight-bold">{{service.fileNameOpenCurent}}</span> file
+                            <div *ngIf="service.stautsGlexServer" >Using <span
+                                class="font-weight-bold">{{service.dictGlexName.dictName}} </span>dictionary</div>
                             <div>จำนวนคำทั้งหมดไม่รวมเว้นวรรค <span class="font-weight-bold">{{service.numSeg}}</span>
                                 คำ</div>
                             <div>จำนวนคำทั้งหมดรวมเว้นวรรค <span

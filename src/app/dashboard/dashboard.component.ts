@@ -4,6 +4,7 @@ import { ServiceApiService } from '../shared/service-api.service';
 import { HttpClient } from '@angular/common/http';
 import { ColorPickerService, Cmyk } from 'ngx-color-picker';
 import { FixedSizeVirtualScrollStrategy, VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
+
 @Component({
 	selector: 'app-dashboard',
 	templateUrl: './dashboard.component.html',
@@ -20,9 +21,11 @@ export class DashboardComponent implements OnInit {
 	ngOnInit(): void {
 		this.service.pingMainServer_()
 		this.service.pingGlexServer_()
+		this.service.getDictName() 
 		interval(5000).subscribe(x => {
 			this.service.pingMainServer_()
 			this.service.pingGlexServer_()
+			this.service.getDictName()
 		});
 	}
 
@@ -261,7 +264,11 @@ export class DashboardComponent implements OnInit {
 				</style>
 				</head><body>
 			`
-			html += `<div class="row" style="text-align: center;">            
+			html += `
+			<span>Using </span><b>`+this.service.dictGlexName.dictName+`<b> <span>dictionary</span>&nbsp;`+`
+			<span>จำนวนคำทั้งหมดไม่รวมเว้นวรรค </span><b>`+this.service.numSeg+`<b> <span>คำ</span>&nbsp;`+`
+			<span>จำนวนคำทั้งหมดรวมเว้นวรรค </span><b>`+this.service.numSegSumSpace+`<b> <span>คำ</span>&nbsp;`+`
+			<div class="row" style="text-align: center;">            
 				<span class="box UNKNOWN"></span><span>คำที่ไม่รู้จัก(`+ this.service.resultsNumberType['UNKNOWN'] + `)</span>&nbsp;|&nbsp;
 				<span class="box KNOWN"></span><span>คำที่รู้จัก(`+ this.service.resultsNumberType['KNOWN'] + `)</span>&nbsp;|&nbsp;
 				<span class="box AMBIGUOUS"></span><span>คำกำกวม(`+ this.service.resultsNumberType['AMBIGUOUS'] + `)</span>&nbsp;|&nbsp;
@@ -293,5 +300,6 @@ export class DashboardComponent implements OnInit {
 		atag.download = name;
 		atag.click();
 	}
+
 
 }

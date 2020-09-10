@@ -8,6 +8,18 @@ import { HttpClient } from '@angular/common/http';
 export class ServiceApiService implements OnInit {
 
   constructor(private http: HttpClient) { }
+  ngOnInit() {
+      
+  }
+
+  urlglexMainService = 'http://localhost:5200/'
+  urlGlexSegment = this.urlglexMainService + 'glexSegment'
+  urlPingMainServer = this.urlglexMainService + "ping"
+  urlGlexServer = 'http://localhost:8080/ping'
+  urlGetDictName = 'http://localhost:8080/get-dict-name'
+  statusMainServer = false
+  stautsGlexServer = false
+  dictGlexName:any
 
   pingMainServer_() {
     this.http.get(this.urlPingMainServer, ).subscribe(
@@ -34,17 +46,20 @@ export class ServiceApiService implements OnInit {
     );
   }
 
-  ngOnInit() {
-
+  getDictName() {
+    if((!this.dictGlexName) || (!this.stautsGlexServer)){
+      this.http.get(this.urlGetDictName,).subscribe(
+        data => {
+          // console.log(data)
+          this.dictGlexName = data
+        },
+      );
+    }
+    
   }
 
-  urlglexMainService = 'http://localhost:5200/'
-  urlGlexSegment = this.urlglexMainService + 'glexSegment'
-  urlPingMainServer = this.urlglexMainService + "ping"
-  urlGlexServer = 'http://localhost:8080/ping'
 
-  statusMainServer = false
-  stautsGlexServer = false
+
 
   // for target all result from http json
   results = []
