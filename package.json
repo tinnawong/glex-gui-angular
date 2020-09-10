@@ -11,7 +11,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "electron": "ng build && electron .",
-    "packager":"electron-packager . --overwrite --out=C:/installer"
+    "packager":"electron-packager . glex-service --overwrite --out=C:/installer --icon=src/assets/images/glex.png"
   },
   "private": true,
   "dependencies": {
