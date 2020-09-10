@@ -92,12 +92,8 @@ function closeService() {
 
 }
 
-function trimString(x) {
-  return x.replace(/^\s+|\s+$/gm, '');
-}
-
 function startCommand() {
-  if (trimString(setup.startProgram) != "") {
+  if (setup.startProgram.trim() != "") {
     try {
       cmdWhenStart = setup.startProgram
       exec(cmdWhenStart, (error, stdout, stderr) => {
