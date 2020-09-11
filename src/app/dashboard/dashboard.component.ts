@@ -21,11 +21,9 @@ export class DashboardComponent implements OnInit {
 	ngOnInit(): void {
 		this.service.pingMainServer_()
 		this.service.pingGlexServer_()
-		this.service.getDictName() 
 		interval(5000).subscribe(x => {
 			this.service.pingMainServer_()
 			this.service.pingGlexServer_()
-			this.service.getDictName()
 		});
 	}
 
@@ -112,6 +110,7 @@ export class DashboardComponent implements OnInit {
 				this.service.resultAfterFilter.push(dicData)
 				this.service.resultsNumberType[nameType] += 1
 
+				// count word segment
 				if (data[0].trim() != "") {
 					this.service.numSeg += 1
 				}
@@ -142,6 +141,7 @@ export class DashboardComponent implements OnInit {
 			for (let data of this.service.results) {
 				if (data.fileName == fileName) {
 					this.service.chooseSegment = data.results
+					this.service.dictGlexName = data.dictName
 					this.filter()
 				}
 			}
@@ -199,7 +199,7 @@ export class DashboardComponent implements OnInit {
 				<!DOCTYPE html><html><head>
 				<title></title><style>
 					body {
-						margin: 20px;
+						margin: 50px;
 					}
 					
 					.UNKNOWN {
@@ -254,6 +254,9 @@ export class DashboardComponent implements OnInit {
 					.TEXT-GROUP {
 						color: `+ this.service.colorDict.GROUP + `;
 					}
+					.TEXT-notShow {
+						color: `+ this.service.colorDict.notShow + `;
+					}
 					
 					.box {
 						/* border: 1px solid #000; */
@@ -265,9 +268,10 @@ export class DashboardComponent implements OnInit {
 				</head><body>
 			`
 			html += `
-			<span>Using </span><b>`+this.service.dictGlexName.dictName+`<b> <span>dictionary</span>&nbsp;`+`
-			<span>จำนวนคำทั้งหมดไม่รวมเว้นวรรค </span><b>`+this.service.numSeg+`<b> <span>คำ</span>&nbsp;`+`
-			<span>จำนวนคำทั้งหมดรวมเว้นวรรค </span><b>`+this.service.numSegSumSpace+`<b> <span>คำ</span>&nbsp;`+`
+			<div>file name <b>`+this.service.fileNameOpenCurent+`</b></div>`+`
+			<div>Using <b>`+this.service.dictGlexName+`</b> dictionary</div>`+`
+			<div>จำนวนคำทั้งหมดไม่รวมเว้นวรรค <b>`+this.service.numSeg+`</b> คำ</div>`+`
+			<div>จำนวนคำทั้งหมดรวมเว้นวรรค <b>`+this.service.numSegSumSpace+`</b> คำ</div>`+`
 			<div class="row" style="text-align: center;">            
 				<span class="box UNKNOWN"></span><span>คำที่ไม่รู้จัก(`+ this.service.resultsNumberType['UNKNOWN'] + `)</span>&nbsp;|&nbsp;
 				<span class="box KNOWN"></span><span>คำที่รู้จัก(`+ this.service.resultsNumberType['KNOWN'] + `)</span>&nbsp;|&nbsp;
@@ -279,8 +283,14 @@ export class DashboardComponent implements OnInit {
 				<hr>
 			</div>`
 			this.service.resultAfterFilter.forEach(element => {
-				if ((element["setColor"] != "notShow") && (element.data[0].trim() != "")) {
+				if ((element["setColor"] != "notShow") ) {
 					html += `<span class="TEXT-` + this.service.dictCode[element.data[1]] + `">` + element.data[0] + `</span>`
+				}
+				else{
+					html += `<span class="TEXT-notShow">` + element.data[0] + `</span>`
+				}
+				if(this.service.separatorSegment){
+					html += this.service.valueSeparatorSegment
 				}
 
 			});

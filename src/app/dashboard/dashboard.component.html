@@ -10,17 +10,19 @@
                 <div class="clearfix">
                     <div class="float-right">
 
-                        <div *ngIf="service.statusMainServer ; else statusMainFalse" class="text-success-d">*status main service</div>
+                        <div *ngIf="service.statusMainServer ; else statusMainFalse" class="text-success-d">*status main
+                            service</div>
                         <ng-template #statusMainFalse>
                             <div class="text-danger">*status main service</div>
                         </ng-template>
 
-                        <div *ngIf="service.stautsGlexServer ; else statusGlexFalse" class="text-success-d">*status glex service</div>
+                        <div *ngIf="service.stautsGlexServer ; else statusGlexFalse" class="text-success-d">*status glex
+                            service</div>
                         <ng-template #statusGlexFalse>
                             <div class="text-danger">*status glex service</div>
                         </ng-template>
 
-                       
+
 
                     </div>
                 </div>
@@ -34,7 +36,7 @@
                     <input type="file" accept=".txt" multiple (change)="selectFiles($event)" />
                 </label>
                 <button *ngIf="selectedFiles && selectedFiles.length>0" mat-raised-button color="primary"
-                    (click)="uploadFiles()">Upload</button>       
+                    (click)="uploadFiles()">Upload</button>
 
             </mat-card-content>
         </mat-card>
@@ -66,8 +68,8 @@
                         <mat-card-title>File HTML</mat-card-title>
                         <mat-card-subtitle>You can choose option and filter <span
                                 class="font-weight-bold">{{service.fileNameOpenCurent}}</span> file
-                            <div *ngIf="service.stautsGlexServer" >Using <span
-                                class="font-weight-bold">{{service.dictGlexName.dictName}} </span>dictionary</div>
+                            <div *ngIf="service.dictGlexName">Using <span
+                                    class="font-weight-bold">{{service.dictGlexName}} </span>dictionary</div>
                             <div>จำนวนคำทั้งหมดไม่รวมเว้นวรรค <span class="font-weight-bold">{{service.numSeg}}</span>
                                 คำ</div>
                             <div>จำนวนคำทั้งหมดรวมเว้นวรรค <span
@@ -76,19 +78,25 @@
                     </div>
 
                 </div>
-                <section class="example-section">
+                <section class="example-section ml-3">
                     <section class="example-section">
-                        <span *ngFor="let item of service.filterWord  let i = index">
-                            <mat-checkbox class="example-margin ml-3 mr-1 " [(ngModel)]="service.filterWord[i].status"
+                        <span *ngFor="let item of service.filterWord  let i = index" >
+                            <mat-checkbox class="mr-1" [(ngModel)]="service.filterWord[i].status"
                                 (click)="clickCheckboxFilterChangeStatus()">
                             </mat-checkbox>
-                            <a [style.color]="service.colorDict[item.name]"
+                            <a  class="mr-3" [style.color]="service.colorDict[item.name]"
                                 [(colorPicker)]="service.colorDict[item.name]" [cpOKButton]="true"
                                 [cpOKButtonText]="'Select'" [cpCancelButton]="true" [cpSaveClickOutside]="'false'"
                                 [cpDisableInput]="false" [cpAlphaChannel]="'disabled'" [cpOutputFormat]="'hex'"
                                 [cpAddColorButton]="true" style="cursor: pointer"><span>{{item.text}}
                                     ({{service.resultsNumberType[item.name]}})</span></a>
                         </span>
+
+                        <mat-checkbox class="mr-3 " [(ngModel)]="service.separatorSegment">
+                            เครื่องหมายแบ่งคำ</mat-checkbox>                        
+                        <input *ngIf="service.separatorSegment" [(ngModel)]="service.valueSeparatorSegment" maxlength="10" class="form-control border border-primary w-25">
+                        
+
                     </section>
                     <section class="clearfix">
                         <button mat-raised-button color="primary" class="float-right mt-3 mr-2 "
@@ -115,8 +123,10 @@
 
 
                 <span *ngFor="let item of service.resultAfterFilter  let i = index">
+                    <!-- ย่อหน้า -->
                     <span *ngIf="i==0" class="pl-lg-5"></span>
                     <span [style.color]="service.colorDict[item.setColor]">{{item.data[0]}}</span>
+                    <span *ngIf="service.separatorSegment">{{service.valueSeparatorSegment}}</span>
                 </span>
 
             </mat-card-content>

@@ -20,7 +20,8 @@ export class ServiceApiService implements OnInit {
   statusMainServer = false
   stautsGlexServer = false
   dictGlexName:any
-
+  separatorSegment = false
+  valueSeparatorSegment= "|"
   pingMainServer_() {
     this.http.get(this.urlPingMainServer, ).subscribe(
       data => {
@@ -33,6 +34,7 @@ export class ServiceApiService implements OnInit {
       }
     );
   }
+
   pingGlexServer_() {
     this.http.get(this.urlGlexServer,).subscribe(
       data => {
@@ -45,19 +47,6 @@ export class ServiceApiService implements OnInit {
       }
     );
   }
-
-  getDictName() {
-    if((!this.dictGlexName) || (!this.stautsGlexServer)){
-      this.http.get(this.urlGetDictName,).subscribe(
-        data => {
-          // console.log(data)
-          this.dictGlexName = data
-        },
-      );
-    }
-    
-  }
-
 
 
 
