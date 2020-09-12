@@ -4,5 +4,5 @@
     "startMainService":"cd main service && @start \"main server(python)\" run.exe",
     "killMainService":"taskkill /FI \"WindowTitle eq main server(python)*\" /T /F",
     "killGlexService":"taskkill /FI \"WindowTitle eq glex server(golang)*\" /T /F",
-    "dictPath":"dic/lexitron.txt"
+    "dictPath":"../dict/lexitron.txt"
 }
