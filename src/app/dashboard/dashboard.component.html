@@ -32,7 +32,8 @@
                         <mat-card-subtitle>Please choose your text file or drag and drop (.txt)</mat-card-subtitle>
                     </div>
                 </div>
-                <label class="btn-sm  border" style="background-color: #dee2e6">
+
+                <label class="btn-sm  border w-75" style="background-color: #dee2e6">
                     <input type="file" accept=".txt" multiple (change)="selectFiles($event)" />
                 </label>
                 <button *ngIf="selectedFiles && selectedFiles.length>0" mat-raised-button color="primary"
@@ -92,7 +93,7 @@
                                     ({{service.resultsNumberType[item.name]}})</span></a>
                         </span>
 
-                        <mat-checkbox class="mr-3 " [(ngModel)]="service.separatorSegment">
+                        <mat-checkbox class="mr-3" [(ngModel)]="service.separatorSegment">
                             เครื่องหมายแบ่งคำ</mat-checkbox>                        
                         <input *ngIf="service.separatorSegment" [(ngModel)]="service.valueSeparatorSegment" maxlength="10" class="form-control border border-primary w-25">
                         

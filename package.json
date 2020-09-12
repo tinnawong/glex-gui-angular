@@ -11,7 +11,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "electron": "ng build && electron .",
-    "packager":"electron-packager . glex-service --out=D:/installer app-version=0.0.1"
+    "packager": "electron-packager . glex-service --out=D:/installer app-version=0.0.1"
   },
   "private": true,
   "dependencies": {
