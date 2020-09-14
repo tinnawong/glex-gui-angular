@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { interval } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -22,6 +23,9 @@ export class ServiceApiService implements OnInit {
   dictGlexName:any
   separatorSegment = false
   valueSeparatorSegment= "|"
+  // for check number request
+  numFileSend
+
   pingMainServer_() {
     this.http.get(this.urlPingMainServer, ).subscribe(
       data => {

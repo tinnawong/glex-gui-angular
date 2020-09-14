@@ -4,6 +4,7 @@ import { ServiceApiService } from '../shared/service-api.service';
 import { HttpClient } from '@angular/common/http';
 import { ColorPickerService, Cmyk } from 'ngx-color-picker';
 import { FixedSizeVirtualScrollStrategy, VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
+import Swal from "sweetalert2"
 
 @Component({
 	selector: 'app-dashboard',
@@ -26,6 +27,18 @@ export class DashboardComponent implements OnInit {
 			this.service.pingGlexServer_()
 		});
 	}
+	modelDailog = Swal.mixin({
+		toast: true,
+		position: 'top-start',
+		showConfirmButton: false,
+		timer: 3000,
+		timerProgressBar: true,
+		onOpen: (toast) => {
+		  toast.addEventListener('mouseenter', Swal.stopTimer)
+		  toast.addEventListener('mouseleave', Swal.resumeTimer)
+		}
+	  })
+
 
 	selectedFiles: FileList = null;
 	progressInfos = [];
@@ -48,8 +61,27 @@ export class DashboardComponent implements OnInit {
 			// dicData[file.name] = data;
 			if (data['status'] == 'ok') {
 				this.service.results.push(data)
+				// for check num respone to alert success
+				if(this.service.numFileSend > 0){
+					this.service.numFileSend --
+				}
 			} else {
-				alert(data['message'])
+				// alert(data['message'])
+				Swal.fire({
+					icon: "error",
+					title: "Error!",
+					text: data['message'],
+					confirmButtonText: "OK"
+				  })
+			}
+			if(this.service.numFileSend <= 0){
+				Swal.fire({
+					position: 'center',
+					icon: 'success',
+					title: 'Successfully',
+					showConfirmButton: false,
+					timer: 1500,
+				  })
 			}
 
 		});
@@ -62,11 +94,25 @@ export class DashboardComponent implements OnInit {
 				for (let i = 0; i < this.selectedFiles.length; i++) {
 					this.upload(i, this.selectedFiles[i]);
 				}
+				this.service.numFileSend = this.selectedFiles.length
+				console.log(this.service.numFileSend)
 			} else {
-				alert("Please choose file")
+				// alert("Please choose file")
+				Swal.fire({
+					icon: 'info',
+					title: "Please choose file",
+					text: "Please choose your files befor upload",
+					confirmButtonText: "OK"
+				  })
 			}
 		}else{
-			alert("Can not connect service")
+			// alert("Can not connect service")
+			Swal.fire({
+				icon: "error",
+				title: "Error!",
+				text: "Can not connect service",
+				confirmButtonText: "OK"
+			  })
 		}
 
 	}
@@ -187,7 +233,13 @@ export class DashboardComponent implements OnInit {
 			});
 			this.downloadContent(this.service.fileNameOpenCurent + ".txt", text)
 		} else {
-			alert("Please choose file and filter befor create file!!")
+			// alert("Please choose file and filter befor create file!!")
+			Swal.fire({
+				icon: 'info',
+				text: "Please choose file and filter befor create file!!",
+				confirmButtonText: "OK"
+			  })
+
 		}
 	}
 
@@ -298,7 +350,13 @@ export class DashboardComponent implements OnInit {
 			this.downloadContent(this.service.fileNameOpenCurent + ".html", html)
 		}
 		else {
-			alert("Please choose file and filter befor create file!!")
+			// alert("Please choose file and filter befor create file!!")
+			Swal.fire({
+				icon: 'info',
+				text: "Please choose file and filter befor create file!!",
+				confirmButtonText: "OK"
+			  })
+			
 		}
 	}
 
@@ -309,6 +367,10 @@ export class DashboardComponent implements OnInit {
 		atag.href = URL.createObjectURL(file);
 		atag.download = name;
 		atag.click();
+		this.modelDailog.fire({
+			icon: 'success',
+			title: 'Download successfully'
+		  })		
 	}
 
 
