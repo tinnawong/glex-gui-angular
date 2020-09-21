@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-
+import {SearchComponent} from './search/search.component'
 import { ButtonsComponent } from './buttons/buttons.component';
 import { GridComponent } from './grid/grid.component';
 import { ListsComponent } from './lists/lists.component';
@@ -16,8 +16,13 @@ import { TooltipComponent } from './tooltip/tooltip.component';
 import { SnackbarComponent } from './snackbar/snackbar.component';
 import { SliderComponent } from './slider/slider.component';
 import { SlideToggleComponent } from './slide-toggle/slide-toggle.component';
+import { from } from 'rxjs';
 
 export const MaterialRoutes: Routes = [
+  {
+    path: 'search',
+    component: SearchComponent
+  },
   {
     path: 'button',
     component: ButtonsComponent

@@ -1,0 +1,69 @@
+<div fxLayout="row wrap">
+    <!-- column -->
+    <div fxFlex.gt-lg="66" fxFlex.gt-md="66" fxFlex.gt-xs="100" fxFlex="100">
+        <mat-card>
+            <mat-card-content>
+                <div class="clearfix">
+                    <div class="float-right">
+
+                        <div *ngIf="service.statusMainServer ; else statusMainFalse" class="text-success-d">*status main
+                            service</div>
+                        <ng-template #statusMainFalse>
+                            <div class="text-danger">*status main service</div>
+                        </ng-template>
+
+                        <div *ngIf="service.stautsGlexServer ; else statusGlexFalse" class="text-success-d">*status glex
+                            service</div>
+                        <ng-template #statusGlexFalse>
+                            <div class="text-danger">*status glex service</div>
+                        </ng-template>
+                    </div>
+                </div>
+
+                <div class="ml-4">
+                    <mat-card-title>Search</mat-card-title>
+                    <mat-form-field class="w-50">
+                        <mat-label>Search</mat-label>
+                        <input matInput placeholder="Search for a word" [(ngModel)]="service.prefix" (keyup.enter)="service.search(service.prefix)">
+                    </mat-form-field>
+                    <button *ngIf="service.prefix.trim() != ''" mat-raised-button color="primary"
+                        (click)="service.search(service.prefix)">Filter</button>
+
+                    <hr>
+                    <span *ngIf="service.lengSearch >=0">ผลลัพธ์ทั้งหมด {{service.lengSearch}} รายการ</span>
+                    <mat-nav-list class="pl-3">
+                        <li *ngFor="let item of service.listSearch let i = index">
+                            {{item}}
+                        </li>
+                    </mat-nav-list>
+                </div>
+
+            </mat-card-content>
+        </mat-card>
+
+    </div>
+    <!-- column -->
+    <!-- column -->
+    <div fxFlex.gt-lg="33" fxFlex.gt-md="33" fxFlex.gt-xs="100" fxFlex="100">
+        <!-- side output file -->
+        <mat-card class="d-none d-xl-block">
+            <mat-card-content (contextmenu)="open($event)">
+            <p>sdfsdfsdfsdfdsf
+                sdf
+                sdfsd
+                fsdf
+                sdf
+                sdfsdfsdfsfwgtrhytjuykiul
+                iolio;iop';
+            </p>
+            </mat-card-content>
+            <hr>
+            <mat-card-content class="mt-0">
+                <mat-nav-list>
+
+                </mat-nav-list>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <!-- column -->
+</div>

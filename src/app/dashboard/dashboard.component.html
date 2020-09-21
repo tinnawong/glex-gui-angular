@@ -38,7 +38,8 @@
                 </label>
                 <button *ngIf="selectedFiles && selectedFiles.length>0" mat-raised-button color="primary"
                     (click)="uploadFiles()">Upload</button>
-
+                <button  mat-raised-button color="primary"
+                        (click)="service.search('เร')">test</button>
             </mat-card-content>
         </mat-card>
 

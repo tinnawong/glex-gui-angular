@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { interval } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { trim } from 'jquery';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class ServiceApiService implements OnInit {
   urlPingMainServer = this.urlglexMainService + "ping"
   urlGlexServer = 'http://localhost:8080/ping'
   urlGetDictName = 'http://localhost:8080/get-dict-name'
+  urlGetSearch = 'http://localhost:8080/search'
   statusMainServer = false
   stautsGlexServer = false
   dictGlexName:any
@@ -26,6 +28,11 @@ export class ServiceApiService implements OnInit {
   // for check number request
   numFileSend
 
+  // for search prefix or word
+  prefix = ""
+  listSearch
+  lengSearch
+  searchRespones
   pingMainServer_() {
     this.http.get(this.urlPingMainServer, ).subscribe(
       data => {
@@ -50,6 +57,28 @@ export class ServiceApiService implements OnInit {
         this.stautsGlexServer = false
       }
     );
+  }
+
+  search(prefix:string){
+    if(trim(prefix) != ""){
+      this.http.get(this.urlGetSearch,{params:{prefix:prefix}}).subscribe(
+        data => {
+          if(data["status"] =='ok'){
+            this.searchRespones = data
+            this.listSearch = data["results"]
+            this.lengSearch = data["numResults"]
+            // console.log(this.listSearch)
+          }
+          
+        },
+        err => {
+          console.log(">>> err :",err)
+        }
+      );
+    }
+    else{
+      alert("Please enter your text for search.")
+    }
   }
 
 
