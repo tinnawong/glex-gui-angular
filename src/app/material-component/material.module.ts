@@ -32,6 +32,7 @@ import { SnackbarComponent } from './snackbar/snackbar.component';
 import { SliderComponent } from './slider/slider.component';
 import { SlideToggleComponent } from './slide-toggle/slide-toggle.component';
 import { SearchComponent } from './search/search.component';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 @NgModule({
   imports: [
@@ -42,7 +43,8 @@ import { SearchComponent } from './search/search.component';
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-    CdkTableModule
+    CdkTableModule,
+    ColorPickerModule
   ],
   providers: [],
   entryComponents: [DialogOverviewExampleDialogComponent],

@@ -4,6 +4,8 @@ import { ServiceApiService } from '../shared/service-api.service';
 import { HttpClient } from '@angular/common/http';
 import { ColorPickerService, Cmyk } from 'ngx-color-picker';
 import { FixedSizeVirtualScrollStrategy, VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
+import { ContextMenu, MenuEventArgs, MenuItemModel } from '@syncfusion/ej2-navigations';
+import { enableRipple } from '@syncfusion/ej2-base';
 import Swal from "sweetalert2"
 
 @Component({
@@ -34,10 +36,10 @@ export class DashboardComponent implements OnInit {
 		timer: 3000,
 		timerProgressBar: true,
 		onOpen: (toast) => {
-		  toast.addEventListener('mouseenter', Swal.stopTimer)
-		  toast.addEventListener('mouseleave', Swal.resumeTimer)
+			toast.addEventListener('mouseenter', Swal.stopTimer)
+			toast.addEventListener('mouseleave', Swal.resumeTimer)
 		}
-	  })
+	})
 
 
 	selectedFiles: FileList = null;
@@ -62,8 +64,8 @@ export class DashboardComponent implements OnInit {
 			if (data['status'] == 'ok') {
 				this.service.results.push(data)
 				// for check num respone to alert success
-				if(this.service.numFileSend > 0){
-					this.service.numFileSend --
+				if (this.service.numFileSend > 0) {
+					this.service.numFileSend--
 				}
 			} else {
 				// alert(data['message'])
@@ -72,23 +74,23 @@ export class DashboardComponent implements OnInit {
 					title: "Error!",
 					text: data['message'],
 					confirmButtonText: "OK"
-				  })
+				})
 			}
-			if(this.service.numFileSend <= 0){
+			if (this.service.numFileSend <= 0) {
 				Swal.fire({
 					position: 'center',
 					icon: 'success',
 					title: 'Successfully',
 					showConfirmButton: false,
 					timer: 1500,
-				  })
+				})
 			}
 
 		});
 	}
 
 	uploadFiles(): void {
-		if(this.service.statusMainServer && this.service.stautsGlexServer){
+		if (this.service.statusMainServer && this.service.stautsGlexServer) {
 			if (this.selectedFiles.length != null) {
 				this.service.results = []
 				for (let i = 0; i < this.selectedFiles.length; i++) {
@@ -103,16 +105,16 @@ export class DashboardComponent implements OnInit {
 					title: "Please choose file",
 					text: "Please choose your files befor upload",
 					confirmButtonText: "OK"
-				  })
+				})
 			}
-		}else{
+		} else {
 			// alert("Can not connect service")
 			Swal.fire({
 				icon: "error",
 				title: "Error!",
 				text: "Can not connect service",
 				confirmButtonText: "OK"
-			  })
+			})
 		}
 
 	}
@@ -198,7 +200,6 @@ export class DashboardComponent implements OnInit {
 		this.service.filterWord = [
 			{ name: "UNKNOWN", status: true, text: "คำที่ไม่รู้จัก" },
 			{ name: "KNOWN", status: true, text: "คำที่รู้จัก" },
-			{ name: "AMBIGUOUS", status: true, text: "คำกำกวม" },
 			{ name: "ENGLISH", status: true, text: "ภาษาอังกฤษ" },
 			{ name: "DIGIT", status: true, text: "ตัวเลข" },
 			{ name: "SPECIAL", status: true, text: "อักขระพิเศษ" },
@@ -207,8 +208,7 @@ export class DashboardComponent implements OnInit {
 		this.service.colorDict = {
 			UNKNOWN: "#FF1100",
 			KNOWN: "#00AB36",
-			AMBIGUOUS: "#0800FF",
-			ENGLISH: " #E7B635",
+			ENGLISH: "#0800FF",
 			DIGIT: " #7741AF",
 			SPECIAL: "#FF7614",
 			GROUP: "#FF14F3",
@@ -238,7 +238,7 @@ export class DashboardComponent implements OnInit {
 				icon: 'info',
 				text: "Please choose file and filter befor create file!!",
 				confirmButtonText: "OK"
-			  })
+			})
 
 		}
 	}
@@ -261,11 +261,7 @@ export class DashboardComponent implements OnInit {
 					.KNOWN {
 						background-color: `+ this.service.colorDict.KNOWN + `;
 					}
-					
-					.AMBIGUOUS {
-						background-color: `+ this.service.colorDict.AMBIGUOUS + `;
-					}
-					
+				
 					.ENGLISH {
 						background-color: `+ this.service.colorDict.ENGLISH + `;
 					}
@@ -286,11 +282,7 @@ export class DashboardComponent implements OnInit {
 					
 					.TEXT-KNOWN {
 						color: `+ this.service.colorDict.KNOWN + `;
-					}
-					
-					.TEXT-AMBIGUOUS {
-						color: `+ this.service.colorDict.AMBIGUOUS + `;
-					}
+					}			
 					
 					.TEXT-ENGLISH {
 						color: `+ this.service.colorDict.ENGLISH + `;
@@ -320,14 +312,13 @@ export class DashboardComponent implements OnInit {
 				</head><body>
 			`
 			html += `
-			<div>file name <b>`+this.service.fileNameOpenCurent+`</b></div>`+`
-			<div>Using <b>`+this.service.dictGlexName+`</b> dictionary</div>`+`
-			<div>จำนวนคำทั้งหมดไม่รวมเว้นวรรค <b>`+this.service.numSeg+`</b> คำ</div>`+`
-			<div>จำนวนคำทั้งหมดรวมเว้นวรรค <b>`+this.service.numSegSumSpace+`</b> คำ</div>`+`
+			<div>file name <b>`+ this.service.fileNameOpenCurent + `</b></div>` + `
+			<div>Using <b>`+ this.service.dictGlexName + `</b> dictionary</div>` + `
+			<div>จำนวนคำทั้งหมดไม่รวมเว้นวรรค <b>`+ this.service.numSeg + `</b> คำ</div>` + `
+			<div>จำนวนคำทั้งหมดรวมเว้นวรรค <b>`+ this.service.numSegSumSpace + `</b> คำ</div>` + `
 			<div class="row" style="text-align: center;">            
 				<span class="box UNKNOWN"></span><span>คำที่ไม่รู้จัก(`+ this.service.resultsNumberType['UNKNOWN'] + `)</span>&nbsp;|&nbsp;
 				<span class="box KNOWN"></span><span>คำที่รู้จัก(`+ this.service.resultsNumberType['KNOWN'] + `)</span>&nbsp;|&nbsp;
-				<span class="box AMBIGUOUS"></span><span>คำกำกวม(`+ this.service.resultsNumberType['AMBIGUOUS'] + `)</span>&nbsp;|&nbsp;
 				<span class="box ENGLISH"></span><span>ภาษาอังกฤษ(`+ this.service.resultsNumberType['ENGLISH'] + `)</span>&nbsp;|&nbsp;
 				<span class="box DIGIT"></span><span>ตัวเลข(`+ this.service.resultsNumberType['DIGIT'] + `)</span>&nbsp;|&nbsp;
 				<span class="box SPECIAL"></span><span>อักขระพิเศษ(`+ this.service.resultsNumberType['SPECIAL'] + `)</span>&nbsp;|&nbsp;
@@ -335,13 +326,13 @@ export class DashboardComponent implements OnInit {
 				<hr>
 			</div>`
 			this.service.resultAfterFilter.forEach(element => {
-				if ((element["setColor"] != "notShow") ) {
+				if ((element["setColor"] != "notShow")) {
 					html += `<span class="TEXT-` + this.service.dictCode[element.data[1]] + `">` + element.data[0] + `</span>`
 				}
-				else{
+				else {
 					html += `<span class="TEXT-notShow">` + element.data[0] + `</span>`
 				}
-				if(this.service.separatorSegment){
+				if (this.service.separatorSegment) {
 					html += this.service.valueSeparatorSegment
 				}
 
@@ -355,8 +346,8 @@ export class DashboardComponent implements OnInit {
 				icon: 'info',
 				text: "Please choose file and filter befor create file!!",
 				confirmButtonText: "OK"
-			  })
-			
+			})
+
 		}
 	}
 
@@ -370,8 +361,80 @@ export class DashboardComponent implements OnInit {
 		this.modelDailog.fire({
 			icon: 'success',
 			title: 'Download successfully'
-		  })		
+		})
 	}
 
+
+	public menuItems: MenuItemModel[] = [
+		{
+			id : "0",
+			text: 'Copy',
+			iconCss: 'e-cm-icons e-copy'
+		},
+		{
+			id :"1",
+			text: 'Copy to store',
+			iconCss: 'e-cm-icons e-copy'
+		}
+	];
+
+	checkReadyToAdd(){
+		var currentWordFilter =""
+		var count = 0
+		var result = []
+		this.service.filterWord.forEach(word => {
+			if(word["status"]){
+				if(count==0){
+					currentWordFilter = word['name']
+					count ++
+				}else{
+					count = -1 
+				}
+			}	
+		});
+		if(count == -1 || count ==0){
+			result.push(false)
+			result.push("")
+			console.log(result)
+			return result
+		}
+		result.push(true)
+		result.push(currentWordFilter)
+		console.log(result)
+		return result
+	}
+
+	public itemSelect(args: MenuEventArgs): void {
+		if (args.item.id === "0") {
+			document.getSelection().toString()
+			document.execCommand("copy");
+		}
+		else if (args.item.id === "1") {
+			const check = this.checkReadyToAdd()
+			if(check[0]){
+				var i =0
+				for (const word of this.service.storeCoppy) {
+					if(word['name'] == check[1]){
+						this.service.storeCoppy[i]["words"].add(document.getSelection().toString().trim())
+						console.log(this.service.storeCoppy)
+						break
+					}
+					i++
+				}
+			}
+			else{
+				alert("Please choose a filter word, befor coppy word to store")
+			}
+		}
+	}
+
+	check = false
+	iCheck = !this.check
+	checkAll(){
+		for (const i in this.service.filterWord) {
+			this.service.filterWord[i].status = this.check
+		}
+		this.check = !this.check
+	}
 
 }

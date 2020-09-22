@@ -19,7 +19,53 @@
                         </ng-template>
                     </div>
                 </div>
+                <section>
+                    <div>
+                        <mat-checkbox class="mr-1" [(ngModel)] = "iCheck"
+                            (click)="checkAll()">Check All</mat-checkbox>
+                    </div>
+                    <span *ngFor="let item of service.storeCoppy  let i = index">
+                        <mat-checkbox class="mr-1" [(ngModel)]="service.storeCoppy[i].status"
+                            >
+                        </mat-checkbox>
+                        <a class="mr-3" [style.color]="service.colorDict[item.name]"
+                            [(colorPicker)]="service.colorDict[item.name]" [cpOKButton]="true"
+                            [cpOKButtonText]="'Select'" [cpCancelButton]="true" [cpSaveClickOutside]="'false'"
+                            [cpDisableInput]="false" [cpAlphaChannel]="'disabled'" [cpOutputFormat]="'hex'"
+                            [cpAddColorButton]="true" style="cursor: pointer"><span>{{item.text}}
+                                ({{item.words.size}})</span></a>
+                    </span>
+                    <section class="clearfix">
+                        <button mat-raised-button color="primary" class="float-right mt-3 mr-2"
+                          (click)="writeFileText()" >Download Text</button>
+                    </section>
 
+                    <hr>
+                    <section  *ngFor="let item of service.storeCoppy  let i = index">
+                        <div class="mb-3">
+                            <div *ngIf="item.status">
+                                <span class="font-weight-bold" [style.color]="service.colorDict[item.name]">{{item.text}}</span>
+                                <mat-nav-list class="pl-3 mt-n1">
+                                    <li *ngFor="let word of item.words let i = index">
+                                        {{word}}
+                                    </li>
+                                </mat-nav-list>
+                            </div>
+                        </div>
+                    </section>
+                   
+                    
+                </section>
+            </mat-card-content>
+        </mat-card>
+
+    </div>
+    <!-- column -->
+    <!-- column -->
+    <div fxFlex.gt-lg="33" fxFlex.gt-md="33" fxFlex.gt-xs="100" fxFlex="100">
+        <!-- side output file -->
+        <mat-card >
+            <mat-card-content>
                 <div class="ml-4">
                     <mat-card-title>Search</mat-card-title>
                     <mat-form-field class="w-50">
@@ -37,32 +83,8 @@
                         </li>
                     </mat-nav-list>
                 </div>
-
             </mat-card-content>
-        </mat-card>
-
-    </div>
-    <!-- column -->
-    <!-- column -->
-    <div fxFlex.gt-lg="33" fxFlex.gt-md="33" fxFlex.gt-xs="100" fxFlex="100">
-        <!-- side output file -->
-        <mat-card class="d-none d-xl-block">
-            <mat-card-content (contextmenu)="open($event)">
-            <p>sdfsdfsdfsdfdsf
-                sdf
-                sdfsd
-                fsdf
-                sdf
-                sdfsdfsdfsfwgtrhytjuykiul
-                iolio;iop';
-            </p>
-            </mat-card-content>
-            <hr>
-            <mat-card-content class="mt-0">
-                <mat-nav-list>
-
-                </mat-nav-list>
-            </mat-card-content>
+   
         </mat-card>
     </div>
     <!-- column -->

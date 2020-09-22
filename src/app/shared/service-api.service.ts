@@ -11,7 +11,6 @@ export class ServiceApiService implements OnInit {
 
   constructor(private http: HttpClient) { }
   ngOnInit() {
-      
   }
 
   urlglexMainService = 'http://localhost:5200/'
@@ -22,9 +21,9 @@ export class ServiceApiService implements OnInit {
   urlGetSearch = 'http://localhost:8080/search'
   statusMainServer = false
   stautsGlexServer = false
-  dictGlexName:any
+  dictGlexName: any
   separatorSegment = false
-  valueSeparatorSegment= "|"
+  valueSeparatorSegment = "|"
   // for check number request
   numFileSend
 
@@ -33,8 +32,20 @@ export class ServiceApiService implements OnInit {
   listSearch
   lengSearch
   searchRespones
+
+  // coppy to store
+  storeCoppy = [
+    { name: "UNKNOWN", status: true, words: new Set(), text: "คำที่ไม่รู้จัก" },
+    { name: "KNOWN", status: false, words: new Set(), text: "คำที่รู้จัก" },
+    { name: "ENGLISH", status: false, words: new Set(), text: "ภาษาอังกฤษ" },
+    { name: "DIGIT", status: false, words: new Set(), text: "ตัวเลข" },
+    { name: "SPECIAL", status: false, words: new Set(), text: "อักขระพิเศษ" },
+    { name: "GROUP", status: false, words: new Set(), text: "เครื่องหมาย" },
+  ]
+
+
   pingMainServer_() {
-    this.http.get(this.urlPingMainServer, ).subscribe(
+    this.http.get(this.urlPingMainServer,).subscribe(
       data => {
         // console.log(data)
         this.statusMainServer = true
@@ -59,24 +70,24 @@ export class ServiceApiService implements OnInit {
     );
   }
 
-  search(prefix:string){
-    if(trim(prefix) != ""){
-      this.http.get(this.urlGetSearch,{params:{prefix:prefix}}).subscribe(
+  search(prefix: string) {
+    if (trim(prefix) != "") {
+      this.http.get(this.urlGetSearch, { params: { prefix: prefix } }).subscribe(
         data => {
-          if(data["status"] =='ok'){
+          if (data["status"] == 'ok') {
             this.searchRespones = data
             this.listSearch = data["results"]
             this.lengSearch = data["numResults"]
             // console.log(this.listSearch)
           }
-          
+
         },
         err => {
-          console.log(">>> err :",err)
+          console.log(">>> err :", err)
         }
       );
     }
-    else{
+    else {
       alert("Please enter your text for search.")
     }
   }
@@ -89,7 +100,6 @@ export class ServiceApiService implements OnInit {
   resultsNumberType = {
     UNKNOWN: 0,
     KNOWN: 0,
-    AMBIGUOUS: 0,
     ENGLISH: 0,
     DIGIT: 0,
     SPECIAL: 0,
@@ -100,7 +110,6 @@ export class ServiceApiService implements OnInit {
     this.resultsNumberType = {
       UNKNOWN: 0,
       KNOWN: 0,
-      AMBIGUOUS: 0,
       ENGLISH: 0,
       DIGIT: 0,
       SPECIAL: 0,
@@ -112,8 +121,8 @@ export class ServiceApiService implements OnInit {
   chooseSegment: Array<any> = null
   // for get text segment after filter and number of word segment
   resultAfterFilter = []
-  numSeg=0
-  numSegSumSpace=0
+  numSeg = 0
+  numSegSumSpace = 0
 
   statusFilter = false
 
@@ -122,7 +131,6 @@ export class ServiceApiService implements OnInit {
   filterWord = [
     { name: "UNKNOWN", status: true, text: "คำที่ไม่รู้จัก" },
     { name: "KNOWN", status: true, text: "คำที่รู้จัก" },
-    { name: "AMBIGUOUS", status: true, text: "คำกำกวม" },
     { name: "ENGLISH", status: true, text: "ภาษาอังกฤษ" },
     { name: "DIGIT", status: true, text: "ตัวเลข" },
     { name: "SPECIAL", status: true, text: "อักขระพิเศษ" },
@@ -132,7 +140,6 @@ export class ServiceApiService implements OnInit {
   resetFilterWord = [
     { name: "UNKNOWN", status: true, text: "คำที่ไม่รู้จัก" },
     { name: "KNOWN", status: true, text: "คำที่รู้จัก" },
-    { name: "AMBIGUOUS", status: true, text: "คำกำกวม" },
     { name: "ENGLISH", status: true, text: "ภาษาอังกฤษ" },
     { name: "DIGIT", status: true, text: "ตัวเลข" },
     { name: "SPECIAL", status: true, text: "อักขระพิเศษ" },
@@ -142,7 +149,6 @@ export class ServiceApiService implements OnInit {
   dictCode = {
     0: "UNKNOWN",
     1: "KNOWN",
-    2: "AMBIGUOUS",
     3: "ENGLISH",
     4: "DIGIT",
     5: "SPECIAL",
@@ -152,8 +158,7 @@ export class ServiceApiService implements OnInit {
   colorDict = {
     UNKNOWN: "#FF1100",
     KNOWN: "#00AB36",
-    AMBIGUOUS: "#0800FF",
-    ENGLISH: " #E7B635",
+    ENGLISH: "#0800FF",
     DIGIT: " #7741AF",
     SPECIAL: "#FF7614",
     GROUP: "#FF14F3",

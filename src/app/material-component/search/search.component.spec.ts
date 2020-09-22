@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SearchComponent } from './search.component';
+import { ColorPickerService, Cmyk } from 'ngx-color-picker';
+
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
