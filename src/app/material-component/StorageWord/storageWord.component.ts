@@ -1,18 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { ServiceApiService } from '../../shared/service-api.service';
 import Swal from "sweetalert2"
+import { ContextMenu, MenuEventArgs, MenuItemModel } from '@syncfusion/ej2-navigations';
+
 @Component({
   selector: 'app-search',
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.css']
+  templateUrl: './storageWord.component.html',
+  styleUrls: ['./storageWord.component.css']
 })
-export class SearchComponent implements OnInit {
+export class StorageWord implements OnInit {
 
   constructor(private service: ServiceApiService) { }
 
 
-  ngOnInit() {
-    
+  ngOnInit() { 
+     
   }
 
   check = true
@@ -25,28 +27,19 @@ export class SearchComponent implements OnInit {
   }
 
   writeFileText() {
-		// if (this.service.statusFilter && this.service.resultAfterFilter != null) {
-		// 	let text = '';
-		// 	this.service.resultAfterFilter.forEach(element => {
-		// 		if ((element["setColor"] != "notShow") && (element.data[0].trim() != "")) {
-		// 			text += element.data[0] + "\n";
-		// 		}
-
-		// 	});
-		// 	this.downloadContent(this.service.fileNameOpenCurent + ".txt", text)
-		// } else {
-		// 	// alert("Please choose file and filter befor create file!!")
-		// 	Swal.fire({
-		// 		icon: 'info',
-		// 		text: "Please choose file and filter befor create file!!",
-		// 		confirmButtonText: "OK"
-		// 	})
-
-		// }
+	  var text =""
+		this.service.storeCoppy.forEach(items => {
+			if(items.status){
+				items.words.forEach(word => {
+					text += word+"\n"
+				});
+			}
+		});
+		this.downloadContent(this.service.fileNameOpenCurent + ".txt", text)
 	}
 	modelDailog = Swal.mixin({
 		toast: true,
-		position: 'top-start',
+		position: 'bottom-start',
 		showConfirmButton: false,
 		timer: 3000,
 		timerProgressBar: true,
@@ -66,8 +59,4 @@ export class SearchComponent implements OnInit {
 			title: 'Download successfully'
 		})
 	}
-
-
-
-
 }

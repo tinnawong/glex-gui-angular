@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import {SearchComponent} from './search/search.component'
+import {StorageWord} from './StorageWord/storageWord.component'
 import { ButtonsComponent } from './buttons/buttons.component';
 import { GridComponent } from './grid/grid.component';
 import { ListsComponent } from './lists/lists.component';
@@ -20,8 +20,8 @@ import { from } from 'rxjs';
 
 export const MaterialRoutes: Routes = [
   {
-    path: 'search',
-    component: SearchComponent
+    path: 'storage-word',
+    component: StorageWord
   },
   {
     path: 'button',

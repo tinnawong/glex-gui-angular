@@ -1,22 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SearchComponent } from './search.component';
-import { ColorPickerService, Cmyk } from 'ngx-color-picker';
-
+import { StorageWord } from './storageWord.component';
 
 describe('SearchComponent', () => {
-  let component: SearchComponent;
-  let fixture: ComponentFixture<SearchComponent>;
+  let component: StorageWord;
+  let fixture: ComponentFixture<StorageWord>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SearchComponent ]
+      declarations: [ StorageWord ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SearchComponent);
+    fixture = TestBed.createComponent(StorageWord);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

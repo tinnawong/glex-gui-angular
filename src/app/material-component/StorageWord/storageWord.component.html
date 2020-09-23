@@ -20,6 +20,8 @@
                     </div>
                 </div>
                 <section>
+                    <mat-card-title>Storage Word</mat-card-title>
+                    <mat-card-subtitle>This word created from glex service page according to word type.</mat-card-subtitle>
                     <div>
                         <mat-checkbox class="mr-1" [(ngModel)] = "iCheck"
                             (click)="checkAll()">Check All</mat-checkbox>
@@ -42,16 +44,17 @@
 
                     <hr>
                     <section  *ngFor="let item of service.storeCoppy  let i = index">
-                        <div class="mb-3">
-                            <div *ngIf="item.status">
-                                <span class="font-weight-bold" [style.color]="service.colorDict[item.name]">{{item.text}}</span>
-                                <mat-nav-list class="pl-3 mt-n1">
-                                    <li *ngFor="let word of item.words let i = index">
-                                        {{word}}
-                                    </li>
-                                </mat-nav-list>
+                        <div class="mb-3 " id="target">
+                                <div *ngIf="item.status">
+                                    <span class="font-weight-bold" [style.color]="service.colorDict[item.name]">{{item.text}}</span>
+                                    <mat-nav-list class="pl-3 mt-n1">
+                                        <li *ngFor="let word of item.words let i = index">
+                                            {{word}}
+                                        </li>
+                                    </mat-nav-list>
+                                </div>
                             </div>
-                        </div>
+                        <ejs-contextmenu target='#target' [items]='service.menuItems2'  (select)="service.itemSelect($event)"></ejs-contextmenu>
                     </section>
                    
                     

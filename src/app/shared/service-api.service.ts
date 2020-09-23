@@ -3,7 +3,9 @@ import { OnInit } from '@angular/core';
 import { interval } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { trim } from 'jquery';
-
+import { ContextMenu, MenuEventArgs, MenuItemModel,BeforeOpenCloseMenuEventArgs } from '@syncfusion/ej2-navigations';
+import { enableRipple } from '@syncfusion/ej2-base';
+import { ContextMenuComponent } from '@syncfusion/ej2-angular-navigations';
 @Injectable({
   providedIn: 'root'
 })
@@ -26,6 +28,7 @@ export class ServiceApiService implements OnInit {
   valueSeparatorSegment = "|"
   // for check number request
   numFileSend
+  uploadStatus = true
 
   // for search prefix or word
   prefix = ""
@@ -42,7 +45,82 @@ export class ServiceApiService implements OnInit {
     { name: "SPECIAL", status: false, words: new Set(), text: "อักขระพิเศษ" },
     { name: "GROUP", status: false, words: new Set(), text: "เครื่องหมาย" },
   ]
+  public menuItems1: MenuItemModel[] = [
+    {
+      id: "0",
+      text: 'Copy',
+    },
+    {
+      id: "1",
+      text: 'Copy to storage',
+    }
+  ];
+  public menuItems2: MenuItemModel[] = [
+    {
+      id: "0",
+      text: 'Copy',
+    },
+  ];
 
+  
+	checkReadyToAdd(){
+		var currentWordFilter =""
+		var count = 0
+		var result = []
+		this.filterWord.forEach(word => {
+			if(word["status"]){
+				if(count==0){
+					currentWordFilter = word['name']
+					count ++
+				}else{
+					count = -1 
+				}
+			}	
+		});
+		if(count == -1 || count ==0){
+			result.push(false)
+			result.push("")
+			// console.log(result)
+			return result
+		}
+		result.push(true)
+		result.push(currentWordFilter)
+		// console.log(result)
+		return result
+  }
+  
+  public cmenu: ContextMenuComponent;
+  
+  itemSelect(args: MenuEventArgs): void {
+		if (args.item.id === "0") {
+			document.getSelection().toString()
+			document.execCommand("copy");
+		}
+		else if (args.item.id === "1") {
+			const check = this.checkReadyToAdd()
+      if(document.getSelection().toString().trim() == ""){
+          alert("Please select a word for coppy word")
+      }
+      else{
+        if(check[0]){
+          var i =0
+          for (const word of this.storeCoppy) {
+            if(word['name'] == check[1]){
+              this.storeCoppy[i]["words"].add(document.getSelection().toString().trim())
+              // console.log(this.storeCoppy)
+              break
+            }
+            i++
+          }
+        }
+        else{
+          alert("Please choose a filter word, befor coppy word")
+        }
+      }
+      
+		}
+  }
+  
 
   pingMainServer_() {
     this.http.get(this.urlPingMainServer,).subscribe(

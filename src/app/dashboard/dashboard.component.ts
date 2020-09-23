@@ -31,7 +31,7 @@ export class DashboardComponent implements OnInit {
 	}
 	modelDailog = Swal.mixin({
 		toast: true,
-		position: 'top-start',
+		position: 'bottom-start',
 		showConfirmButton: false,
 		timer: 3000,
 		timerProgressBar: true,
@@ -67,8 +67,12 @@ export class DashboardComponent implements OnInit {
 				if (this.service.numFileSend > 0) {
 					this.service.numFileSend--
 				}
+			
 			} else {
 				// alert(data['message'])
+				if (this.service.numFileSend > 0) {
+					this.service.numFileSend--
+				}
 				Swal.fire({
 					icon: "error",
 					title: "Error!",
@@ -77,6 +81,7 @@ export class DashboardComponent implements OnInit {
 				})
 			}
 			if (this.service.numFileSend <= 0) {
+				this.service.uploadStatus = true
 				Swal.fire({
 					position: 'center',
 					icon: 'success',
@@ -92,12 +97,22 @@ export class DashboardComponent implements OnInit {
 	uploadFiles(): void {
 		if (this.service.statusMainServer && this.service.stautsGlexServer) {
 			if (this.selectedFiles.length != null) {
-				this.service.results = []
-				for (let i = 0; i < this.selectedFiles.length; i++) {
-					this.upload(i, this.selectedFiles[i]);
+				if(this.service.uploadStatus){
+					this.service.uploadStatus = false
+					this.service.results = []					
+					for (let i = 0; i < this.selectedFiles.length; i++) {
+						this.upload(i, this.selectedFiles[i]);
+					}
+					this.service.numFileSend = this.selectedFiles.length
+					// console.log(this.service.numFileSend)
+				}else{
+					Swal.fire({
+						icon: 'info',
+						title: "Please wait",
+						text: "You can upload after receiving complete results",
+						confirmButtonText: "OK"
+					})
 				}
-				this.service.numFileSend = this.selectedFiles.length
-				console.log(this.service.numFileSend)
 			} else {
 				// alert("Please choose file")
 				Swal.fire({
@@ -221,26 +236,84 @@ export class DashboardComponent implements OnInit {
 		this.filter()
 	}
 
+	sortThaiDictionary = list => {
+		const newList = [...list]
+		newList.sort((a, b) => a.localeCompare(b, 'th'))
+		return newList
+	}
+
 	writeFileText() {
 		// example = [ { "data": [ "ทดสอบ", 2 ], "setColor": "AMBIGUOUS" }, { "data": [ "การใช้งาน", 2 ], "setColor": "notShow" },]
-		if (this.service.statusFilter && this.service.resultAfterFilter != null) {
-			let text = '';
-			this.service.resultAfterFilter.forEach(element => {
-				if ((element["setColor"] != "notShow") && (element.data[0].trim() != "")) {
-					text += element.data[0] + "\n";
+
+		Swal.fire({
+			title: 'Dowload Text',
+			icon: 'info',
+			html: `
+			<div class="clearfix">
+				<div class="form-check">
+					<label class="form-check-label mr-2">
+						<input id="sort" type="checkbox" > sort word
+					</label>
+					<label class="form-check-label">
+						<input id="unique" type="checkbox"> word unique
+					</label>
+				</div>
+			
+			</div>
+			`,
+			showCloseButton: true,
+			showCancelButton: true,
+			preConfirm: () => {
+				var sort = (<HTMLInputElement>document.getElementById("sort")).checked;
+				var unique = (<HTMLInputElement>document.getElementById("unique")).checked;
+				console.log(">>> ", sort, unique)
+
+				if (this.service.statusFilter && this.service.resultAfterFilter != null) {
+
+					var textList = []
+					// generate list data
+					this.service.resultAfterFilter.forEach(element => {
+						if ((element["setColor"] != "notShow") && (element.data[0].trim() != "")) {
+							textList.push(String(element.data[0]))
+						}
+
+					});
+					console.log("gen :",textList)
+					if (unique) {
+						let set = new Set(textList)
+						textList = Array.from(set)
+						console.log("uni :",textList)
+					}
+					if (sort) {
+						let result = this.sortThaiDictionary(textList)
+						textList = Array.from(result)
+						console.log("sort :",textList)
+
+					}
+
+					// write content
+					let text = '';
+					textList.forEach(word => {
+						console.log(">>> word :",word)
+						text += word + "\n"
+					});
+
+					this.downloadContent(this.service.fileNameOpenCurent + ".txt", text)
+				} else {
+					// alert("Please choose file and filter befor create file!!")
+					Swal.fire({
+						icon: 'info',
+						text: "Please choose file and filter befor create file!!",
+						confirmButtonText: "OK"
+					})
 				}
+			}
+		})
 
-			});
-			this.downloadContent(this.service.fileNameOpenCurent + ".txt", text)
-		} else {
-			// alert("Please choose file and filter befor create file!!")
-			Swal.fire({
-				icon: 'info',
-				text: "Please choose file and filter befor create file!!",
-				confirmButtonText: "OK"
-			})
 
-		}
+
+
+
 	}
 
 	writeFileHtml() {
@@ -364,73 +437,9 @@ export class DashboardComponent implements OnInit {
 		})
 	}
 
-
-	public menuItems: MenuItemModel[] = [
-		{
-			id : "0",
-			text: 'Copy',
-			iconCss: 'e-cm-icons e-copy'
-		},
-		{
-			id :"1",
-			text: 'Copy to store',
-			iconCss: 'e-cm-icons e-copy'
-		}
-	];
-
-	checkReadyToAdd(){
-		var currentWordFilter =""
-		var count = 0
-		var result = []
-		this.service.filterWord.forEach(word => {
-			if(word["status"]){
-				if(count==0){
-					currentWordFilter = word['name']
-					count ++
-				}else{
-					count = -1 
-				}
-			}	
-		});
-		if(count == -1 || count ==0){
-			result.push(false)
-			result.push("")
-			console.log(result)
-			return result
-		}
-		result.push(true)
-		result.push(currentWordFilter)
-		console.log(result)
-		return result
-	}
-
-	public itemSelect(args: MenuEventArgs): void {
-		if (args.item.id === "0") {
-			document.getSelection().toString()
-			document.execCommand("copy");
-		}
-		else if (args.item.id === "1") {
-			const check = this.checkReadyToAdd()
-			if(check[0]){
-				var i =0
-				for (const word of this.service.storeCoppy) {
-					if(word['name'] == check[1]){
-						this.service.storeCoppy[i]["words"].add(document.getSelection().toString().trim())
-						console.log(this.service.storeCoppy)
-						break
-					}
-					i++
-				}
-			}
-			else{
-				alert("Please choose a filter word, befor coppy word to store")
-			}
-		}
-	}
-
 	check = false
 	iCheck = !this.check
-	checkAll(){
+	checkAll() {
 		for (const i in this.service.filterWord) {
 			this.service.filterWord[i].status = this.check
 		}
