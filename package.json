@@ -31,6 +31,7 @@
     "@ng-select/ng-select": "^5.0.1",
     "@swimlane/ngx-charts": "^13.0.2",
     "@swimlane/ngx-datatable": "^16.0.3",
+    "@syncfusion/ej2-angular-navigations": "^18.2.58",
     "bootstrap": "^4.5.2",
     "chartist": "^0.11.3",
     "core-js": "^2.6.11",

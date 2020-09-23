@@ -8,6 +8,8 @@ import { DashboardRoutes } from './dashboard.routing';
 import { ChartistModule } from 'ng-chartist';
 import { FormsModule } from '@angular/forms';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { ContextMenuModule } from '@syncfusion/ej2-angular-navigations';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -16,6 +18,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
     ChartistModule,
     FormsModule,
     ColorPickerModule,
+    ContextMenuModule,
     RouterModule.forChild(DashboardRoutes)
   ],
   declarations: [DashboardComponent,]

@@ -31,6 +31,9 @@ import { TooltipComponent } from './tooltip/tooltip.component';
 import { SnackbarComponent } from './snackbar/snackbar.component';
 import { SliderComponent } from './slider/slider.component';
 import { SlideToggleComponent } from './slide-toggle/slide-toggle.component';
+import { StorageWord } from './StorageWord/storageWord.component';
+import { ColorPickerModule } from 'ngx-color-picker';
+import { ContextMenuModule } from '@syncfusion/ej2-angular-navigations';
 
 @NgModule({
   imports: [
@@ -41,7 +44,9 @@ import { SlideToggleComponent } from './slide-toggle/slide-toggle.component';
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-    CdkTableModule
+    CdkTableModule,
+    ContextMenuModule,
+    ColorPickerModule
   ],
   providers: [],
   entryComponents: [DialogOverviewExampleDialogComponent],
@@ -62,7 +67,8 @@ import { SlideToggleComponent } from './slide-toggle/slide-toggle.component';
     TooltipComponent,
     SnackbarComponent,
     SliderComponent,
-    SlideToggleComponent
+    SlideToggleComponent,
+    StorageWord
   ]
 })
 export class MaterialComponentsModule {}

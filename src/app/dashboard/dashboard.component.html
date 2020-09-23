@@ -38,7 +38,6 @@
                 </label>
                 <button *ngIf="selectedFiles && selectedFiles.length>0" mat-raised-button color="primary"
                     (click)="uploadFiles()">Upload</button>
-
             </mat-card-content>
         </mat-card>
 
@@ -81,11 +80,15 @@
                 </div>
                 <section class="example-section ml-3">
                     <section class="example-section">
-                        <span *ngFor="let item of service.filterWord  let i = index" >
+                        <div>
+                            <mat-checkbox class="mr-1" [(ngModel)] = "iCheck"
+                                (click)="checkAll()">Check All</mat-checkbox>
+                        </div>
+                        <span *ngFor="let item of service.filterWord  let i = index">
                             <mat-checkbox class="mr-1" [(ngModel)]="service.filterWord[i].status"
                                 (click)="clickCheckboxFilterChangeStatus()">
                             </mat-checkbox>
-                            <a  class="mr-3" [style.color]="service.colorDict[item.name]"
+                            <a class="mr-3" [style.color]="service.colorDict[item.name]"
                                 [(colorPicker)]="service.colorDict[item.name]" [cpOKButton]="true"
                                 [cpOKButtonText]="'Select'" [cpCancelButton]="true" [cpSaveClickOutside]="'false'"
                                 [cpDisableInput]="false" [cpAlphaChannel]="'disabled'" [cpOutputFormat]="'hex'"
@@ -94,9 +97,9 @@
                         </span>
 
                         <mat-checkbox class="mr-3" [(ngModel)]="service.separatorSegment">
-                            เครื่องหมายแบ่งคำ</mat-checkbox>                        
-                        <input *ngIf="service.separatorSegment" [(ngModel)]="service.valueSeparatorSegment" maxlength="10" class="form-control border border-primary w-25">
-                        
+                            เครื่องหมายแบ่งคำ</mat-checkbox>
+                        <input *ngIf="service.separatorSegment" [(ngModel)]="service.valueSeparatorSegment"
+                            maxlength="10" class="form-control border border-primary w-25">
 
                     </section>
                     <section class="clearfix">
@@ -116,19 +119,21 @@
                     <hr>
                 </section>
 
+                <div id="target">  
+                    <span *ngFor="let item of service.resultAfterFilter  let i = index">
+                        <!-- ย่อหน้า -->
+                        <span *ngIf="i==0" class="pl-lg-5"></span>
+                        <span [style.color]="service.colorDict[item.setColor]">{{item.data[0]}}</span>
+                        <span *ngIf="service.separatorSegment">{{service.valueSeparatorSegment}}</span>
+                    </span>
+                </div>
+                <ejs-contextmenu id='contextmenu'  target='#target' [items]='service.menuItems1'  (select)="service.itemSelect($event)"></ejs-contextmenu>
+
 
                 <!-- {{service.chooseSegment}}
                 <hr> -->
                 <!-- {{service.resultAfterFilter |json}}
                 <hr> -->
-
-
-                <span *ngFor="let item of service.resultAfterFilter  let i = index">
-                    <!-- ย่อหน้า -->
-                    <span *ngIf="i==0" class="pl-lg-5"></span>
-                    <span [style.color]="service.colorDict[item.setColor]">{{item.data[0]}}</span>
-                    <span *ngIf="service.separatorSegment">{{service.valueSeparatorSegment}}</span>
-                </span>
 
             </mat-card-content>
         </mat-card>

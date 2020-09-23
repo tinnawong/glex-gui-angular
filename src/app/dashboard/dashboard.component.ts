@@ -4,6 +4,8 @@ import { ServiceApiService } from '../shared/service-api.service';
 import { HttpClient } from '@angular/common/http';
 import { ColorPickerService, Cmyk } from 'ngx-color-picker';
 import { FixedSizeVirtualScrollStrategy, VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
+import { ContextMenu, MenuEventArgs, MenuItemModel } from '@syncfusion/ej2-navigations';
+import { enableRipple } from '@syncfusion/ej2-base';
 import Swal from "sweetalert2"
 
 @Component({
@@ -29,15 +31,15 @@ export class DashboardComponent implements OnInit {
 	}
 	modelDailog = Swal.mixin({
 		toast: true,
-		position: 'top-start',
+		position: 'bottom-start',
 		showConfirmButton: false,
 		timer: 3000,
 		timerProgressBar: true,
 		onOpen: (toast) => {
-		  toast.addEventListener('mouseenter', Swal.stopTimer)
-		  toast.addEventListener('mouseleave', Swal.resumeTimer)
+			toast.addEventListener('mouseenter', Swal.stopTimer)
+			toast.addEventListener('mouseleave', Swal.resumeTimer)
 		}
-	  })
+	})
 
 
 	selectedFiles: FileList = null;
@@ -62,40 +64,55 @@ export class DashboardComponent implements OnInit {
 			if (data['status'] == 'ok') {
 				this.service.results.push(data)
 				// for check num respone to alert success
-				if(this.service.numFileSend > 0){
-					this.service.numFileSend --
+				if (this.service.numFileSend > 0) {
+					this.service.numFileSend--
 				}
+			
 			} else {
 				// alert(data['message'])
+				if (this.service.numFileSend > 0) {
+					this.service.numFileSend--
+				}
 				Swal.fire({
 					icon: "error",
 					title: "Error!",
 					text: data['message'],
 					confirmButtonText: "OK"
-				  })
+				})
 			}
-			if(this.service.numFileSend <= 0){
+			if (this.service.numFileSend <= 0) {
+				this.service.uploadStatus = true
 				Swal.fire({
 					position: 'center',
 					icon: 'success',
 					title: 'Successfully',
 					showConfirmButton: false,
 					timer: 1500,
-				  })
+				})
 			}
 
 		});
 	}
 
 	uploadFiles(): void {
-		if(this.service.statusMainServer && this.service.stautsGlexServer){
+		if (this.service.statusMainServer && this.service.stautsGlexServer) {
 			if (this.selectedFiles.length != null) {
-				this.service.results = []
-				for (let i = 0; i < this.selectedFiles.length; i++) {
-					this.upload(i, this.selectedFiles[i]);
+				if(this.service.uploadStatus){
+					this.service.uploadStatus = false
+					this.service.results = []					
+					for (let i = 0; i < this.selectedFiles.length; i++) {
+						this.upload(i, this.selectedFiles[i]);
+					}
+					this.service.numFileSend = this.selectedFiles.length
+					// console.log(this.service.numFileSend)
+				}else{
+					Swal.fire({
+						icon: 'info',
+						title: "Please wait",
+						text: "You can upload after receiving complete results",
+						confirmButtonText: "OK"
+					})
 				}
-				this.service.numFileSend = this.selectedFiles.length
-				console.log(this.service.numFileSend)
 			} else {
 				// alert("Please choose file")
 				Swal.fire({
@@ -103,16 +120,16 @@ export class DashboardComponent implements OnInit {
 					title: "Please choose file",
 					text: "Please choose your files befor upload",
 					confirmButtonText: "OK"
-				  })
+				})
 			}
-		}else{
+		} else {
 			// alert("Can not connect service")
 			Swal.fire({
 				icon: "error",
 				title: "Error!",
 				text: "Can not connect service",
 				confirmButtonText: "OK"
-			  })
+			})
 		}
 
 	}
@@ -198,7 +215,6 @@ export class DashboardComponent implements OnInit {
 		this.service.filterWord = [
 			{ name: "UNKNOWN", status: true, text: "คำที่ไม่รู้จัก" },
 			{ name: "KNOWN", status: true, text: "คำที่รู้จัก" },
-			{ name: "AMBIGUOUS", status: true, text: "คำกำกวม" },
 			{ name: "ENGLISH", status: true, text: "ภาษาอังกฤษ" },
 			{ name: "DIGIT", status: true, text: "ตัวเลข" },
 			{ name: "SPECIAL", status: true, text: "อักขระพิเศษ" },
@@ -207,8 +223,7 @@ export class DashboardComponent implements OnInit {
 		this.service.colorDict = {
 			UNKNOWN: "#FF1100",
 			KNOWN: "#00AB36",
-			AMBIGUOUS: "#0800FF",
-			ENGLISH: " #E7B635",
+			ENGLISH: "#0800FF",
 			DIGIT: " #7741AF",
 			SPECIAL: "#FF7614",
 			GROUP: "#FF14F3",
@@ -221,26 +236,84 @@ export class DashboardComponent implements OnInit {
 		this.filter()
 	}
 
+	sortThaiDictionary = list => {
+		const newList = [...list]
+		newList.sort((a, b) => a.localeCompare(b, 'th'))
+		return newList
+	}
+
 	writeFileText() {
 		// example = [ { "data": [ "ทดสอบ", 2 ], "setColor": "AMBIGUOUS" }, { "data": [ "การใช้งาน", 2 ], "setColor": "notShow" },]
-		if (this.service.statusFilter && this.service.resultAfterFilter != null) {
-			let text = '';
-			this.service.resultAfterFilter.forEach(element => {
-				if ((element["setColor"] != "notShow") && (element.data[0].trim() != "")) {
-					text += element.data[0] + "\n";
+
+		Swal.fire({
+			title: 'Dowload Text',
+			icon: 'info',
+			html: `
+			<div class="clearfix">
+				<div class="form-check">
+					<label class="form-check-label mr-2">
+						<input id="sort" type="checkbox" > sort word
+					</label>
+					<label class="form-check-label">
+						<input id="unique" type="checkbox"> word unique
+					</label>
+				</div>
+			
+			</div>
+			`,
+			showCloseButton: true,
+			showCancelButton: true,
+			preConfirm: () => {
+				var sort = (<HTMLInputElement>document.getElementById("sort")).checked;
+				var unique = (<HTMLInputElement>document.getElementById("unique")).checked;
+				console.log(">>> ", sort, unique)
+
+				if (this.service.statusFilter && this.service.resultAfterFilter != null) {
+
+					var textList = []
+					// generate list data
+					this.service.resultAfterFilter.forEach(element => {
+						if ((element["setColor"] != "notShow") && (element.data[0].trim() != "")) {
+							textList.push(String(element.data[0]))
+						}
+
+					});
+					console.log("gen :",textList)
+					if (unique) {
+						let set = new Set(textList)
+						textList = Array.from(set)
+						console.log("uni :",textList)
+					}
+					if (sort) {
+						let result = this.sortThaiDictionary(textList)
+						textList = Array.from(result)
+						console.log("sort :",textList)
+
+					}
+
+					// write content
+					let text = '';
+					textList.forEach(word => {
+						console.log(">>> word :",word)
+						text += word + "\n"
+					});
+
+					this.downloadContent(this.service.fileNameOpenCurent + ".txt", text)
+				} else {
+					// alert("Please choose file and filter befor create file!!")
+					Swal.fire({
+						icon: 'info',
+						text: "Please choose file and filter befor create file!!",
+						confirmButtonText: "OK"
+					})
 				}
+			}
+		})
 
-			});
-			this.downloadContent(this.service.fileNameOpenCurent + ".txt", text)
-		} else {
-			// alert("Please choose file and filter befor create file!!")
-			Swal.fire({
-				icon: 'info',
-				text: "Please choose file and filter befor create file!!",
-				confirmButtonText: "OK"
-			  })
 
-		}
+
+
+
 	}
 
 	writeFileHtml() {
@@ -261,11 +334,7 @@ export class DashboardComponent implements OnInit {
 					.KNOWN {
 						background-color: `+ this.service.colorDict.KNOWN + `;
 					}
-					
-					.AMBIGUOUS {
-						background-color: `+ this.service.colorDict.AMBIGUOUS + `;
-					}
-					
+				
 					.ENGLISH {
 						background-color: `+ this.service.colorDict.ENGLISH + `;
 					}
@@ -286,11 +355,7 @@ export class DashboardComponent implements OnInit {
 					
 					.TEXT-KNOWN {
 						color: `+ this.service.colorDict.KNOWN + `;
-					}
-					
-					.TEXT-AMBIGUOUS {
-						color: `+ this.service.colorDict.AMBIGUOUS + `;
-					}
+					}			
 					
 					.TEXT-ENGLISH {
 						color: `+ this.service.colorDict.ENGLISH + `;
@@ -320,14 +385,13 @@ export class DashboardComponent implements OnInit {
 				</head><body>
 			`
 			html += `
-			<div>file name <b>`+this.service.fileNameOpenCurent+`</b></div>`+`
-			<div>Using <b>`+this.service.dictGlexName+`</b> dictionary</div>`+`
-			<div>จำนวนคำทั้งหมดไม่รวมเว้นวรรค <b>`+this.service.numSeg+`</b> คำ</div>`+`
-			<div>จำนวนคำทั้งหมดรวมเว้นวรรค <b>`+this.service.numSegSumSpace+`</b> คำ</div>`+`
+			<div>file name <b>`+ this.service.fileNameOpenCurent + `</b></div>` + `
+			<div>Using <b>`+ this.service.dictGlexName + `</b> dictionary</div>` + `
+			<div>จำนวนคำทั้งหมดไม่รวมเว้นวรรค <b>`+ this.service.numSeg + `</b> คำ</div>` + `
+			<div>จำนวนคำทั้งหมดรวมเว้นวรรค <b>`+ this.service.numSegSumSpace + `</b> คำ</div>` + `
 			<div class="row" style="text-align: center;">            
 				<span class="box UNKNOWN"></span><span>คำที่ไม่รู้จัก(`+ this.service.resultsNumberType['UNKNOWN'] + `)</span>&nbsp;|&nbsp;
 				<span class="box KNOWN"></span><span>คำที่รู้จัก(`+ this.service.resultsNumberType['KNOWN'] + `)</span>&nbsp;|&nbsp;
-				<span class="box AMBIGUOUS"></span><span>คำกำกวม(`+ this.service.resultsNumberType['AMBIGUOUS'] + `)</span>&nbsp;|&nbsp;
 				<span class="box ENGLISH"></span><span>ภาษาอังกฤษ(`+ this.service.resultsNumberType['ENGLISH'] + `)</span>&nbsp;|&nbsp;
 				<span class="box DIGIT"></span><span>ตัวเลข(`+ this.service.resultsNumberType['DIGIT'] + `)</span>&nbsp;|&nbsp;
 				<span class="box SPECIAL"></span><span>อักขระพิเศษ(`+ this.service.resultsNumberType['SPECIAL'] + `)</span>&nbsp;|&nbsp;
@@ -335,13 +399,13 @@ export class DashboardComponent implements OnInit {
 				<hr>
 			</div>`
 			this.service.resultAfterFilter.forEach(element => {
-				if ((element["setColor"] != "notShow") ) {
+				if ((element["setColor"] != "notShow")) {
 					html += `<span class="TEXT-` + this.service.dictCode[element.data[1]] + `">` + element.data[0] + `</span>`
 				}
-				else{
+				else {
 					html += `<span class="TEXT-notShow">` + element.data[0] + `</span>`
 				}
-				if(this.service.separatorSegment){
+				if (this.service.separatorSegment) {
 					html += this.service.valueSeparatorSegment
 				}
 
@@ -355,8 +419,8 @@ export class DashboardComponent implements OnInit {
 				icon: 'info',
 				text: "Please choose file and filter befor create file!!",
 				confirmButtonText: "OK"
-			  })
-			
+			})
+
 		}
 	}
 
@@ -370,8 +434,16 @@ export class DashboardComponent implements OnInit {
 		this.modelDailog.fire({
 			icon: 'success',
 			title: 'Download successfully'
-		  })		
+		})
 	}
 
+	check = false
+	iCheck = !this.check
+	checkAll() {
+		for (const i in this.service.filterWord) {
+			this.service.filterWord[i].status = this.check
+		}
+		this.check = !this.check
+	}
 
 }
