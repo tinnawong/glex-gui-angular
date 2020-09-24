@@ -36,10 +36,15 @@
                 <label class="btn-sm  border" style="background-color: #dee2e6">
                     <input type="file" accept=".txt" multiple (change)="selectFiles($event)" />
                 </label>
-                <button *ngIf="selectedFiles && selectedFiles.length>0" mat-raised-button color="primary"
+                <button *ngIf="selectedFiles && (selectedFiles.length>0) && service.uploadStatus" mat-raised-button color="primary"
                     (click)="uploadFiles()">Upload</button>
+                <button *ngIf="!service.uploadStatus" mat-raised-button color="primary" (click)="uploadFiles()">
+                    <div class="spinner-border text-light" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </button>
             </mat-card-content>
-        </mat-card>
+        </mat-card> 
 
         <!-- side output file -->
         <mat-card class="d-block d-xl-none">
@@ -61,6 +66,7 @@
                 </mat-nav-list>
             </mat-card-content>
         </mat-card>
+        
         <mat-card>
             <mat-card-content>
                 <div class="d-flex flex-wrap">
@@ -151,7 +157,7 @@
             <mat-card-content class="mt-0">
                 <mat-nav-list>
                     <div *ngFor="let data of service.results;">
-                        <mat-list-item (click)="openFileSegment(data.fileName)">
+                        <mat-list-item  (click)="openFileSegment(data.fileName)">
                             <button mat-icon-button>
                                 <mat-icon>description</mat-icon>
                             </button>

@@ -4,39 +4,85 @@ import Swal from "sweetalert2"
 import { ContextMenu, MenuEventArgs, MenuItemModel } from '@syncfusion/ej2-navigations';
 
 @Component({
-  selector: 'app-search',
-  templateUrl: './storageWord.component.html',
-  styleUrls: ['./storageWord.component.css']
+	selector: 'app-search',
+	templateUrl: './storageWord.component.html',
+	styleUrls: ['./storageWord.component.css']
 })
 export class StorageWord implements OnInit {
 
-  constructor(private service: ServiceApiService) { }
+	constructor(private service: ServiceApiService) { }
 
 
-  ngOnInit() { 
-     
-  }
+	ngOnInit() {
 
-  check = true
-  iCheck = !this.check
-  checkAll(){
-      for (const i in this.service.storeCoppy) {
-          this.service.storeCoppy[i].status = this.check
-      }
-      this.check = !this.check
-  }
-
-  writeFileText() {
-	  var text =""
-		this.service.storeCoppy.forEach(items => {
-			if(items.status){
-				items.words.forEach(word => {
-					text += word+"\n"
-				});
-			}
-		});
-		this.downloadContent(this.service.fileNameOpenCurent + ".txt", text)
 	}
+
+
+	iCheck = !this.service.checkAll_storageWord
+	checkAll() {
+		for (const i in this.service.storeCoppy) {
+			this.service.storeCoppy[i].status = this.service.checkAll_storageWord
+		}
+		this.service.checkAll_storageWord = !this.service.checkAll_storageWord
+	}
+
+	writeFileText() {
+		Swal.fire({
+			title: 'Dowload Text',
+			icon: 'info',
+			html: `
+				<div class="clearfix">
+					<div class="form-check">
+						<label class="form-check-label mr-2">
+							<input id="sort" type="checkbox" checked > sort word
+						</label>
+						<label class="form-check-label">
+							<input id="unique" type="checkbox" checked> word unique
+						</label>
+					</div>
+				
+				</div>
+				`,
+			showCloseButton: true,
+			showCancelButton: true,
+			preConfirm: () => {
+				var sort = (<HTMLInputElement>document.getElementById("sort")).checked;
+				var unique = (<HTMLInputElement>document.getElementById("unique")).checked;
+
+				var textList = []
+				// generate list data
+				this.service.storeCoppy.forEach(items => {
+					if (items.status) {
+						items.words.forEach(word => {
+							textList.push(String(word))
+						});
+					}
+				});
+
+				console.log("gen :", textList)
+				if (unique) {
+					let set = new Set(textList)
+					textList = Array.from(set)
+					// console.log("uni :",textList)
+				}
+				if (sort) {
+					let result = this.service.sortThaiDictionary(textList)
+					textList = Array.from(result)
+					// console.log("sort :",textList)
+
+				}
+
+				// write content
+				let text = "";
+				textList.forEach(word => {
+					// console.log(">>> word :",word)
+					text += word + "\n"
+				});
+				this.downloadContent(this.service.fileNameOpenCurent + ".txt", text)
+			}
+		})
+	}
+
 	modelDailog = Swal.mixin({
 		toast: true,
 		position: 'bottom-start',
@@ -48,15 +94,15 @@ export class StorageWord implements OnInit {
 			toast.addEventListener('mouseleave', Swal.resumeTimer)
 		}
 	})
-  downloadContent(name, content) {
+	downloadContent(name, content) {
 		const atag = document.createElement('a');
 		const file = new Blob([content], { type: 'text/plain' });
 		atag.href = URL.createObjectURL(file);
 		atag.download = name;
 		atag.click();
-		this.modelDailog.fire({
-			icon: 'success',
-			title: 'Download successfully'
-		})
+		// this.modelDailog.fire({
+		// 	icon: 'success',
+		// 	title: 'Download successfully'
+		// })
 	}
 }

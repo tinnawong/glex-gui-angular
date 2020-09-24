@@ -7,6 +7,7 @@ import { FixedSizeVirtualScrollStrategy, VIRTUAL_SCROLL_STRATEGY } from '@angula
 import { ContextMenu, MenuEventArgs, MenuItemModel } from '@syncfusion/ej2-navigations';
 import { enableRipple } from '@syncfusion/ej2-base';
 import Swal from "sweetalert2"
+import { async } from '@angular/core/testing';
 
 @Component({
 	selector: 'app-dashboard',
@@ -33,7 +34,7 @@ export class DashboardComponent implements OnInit {
 		toast: true,
 		position: 'bottom-start',
 		showConfirmButton: false,
-		timer: 3000,
+		timer: 4000,
 		timerProgressBar: true,
 		onOpen: (toast) => {
 			toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -236,12 +237,6 @@ export class DashboardComponent implements OnInit {
 		this.filter()
 	}
 
-	sortThaiDictionary = list => {
-		const newList = [...list]
-		newList.sort((a, b) => a.localeCompare(b, 'th'))
-		return newList
-	}
-
 	writeFileText() {
 		// example = [ { "data": [ "ทดสอบ", 2 ], "setColor": "AMBIGUOUS" }, { "data": [ "การใช้งาน", 2 ], "setColor": "notShow" },]
 
@@ -252,10 +247,10 @@ export class DashboardComponent implements OnInit {
 			<div class="clearfix">
 				<div class="form-check">
 					<label class="form-check-label mr-2">
-						<input id="sort" type="checkbox" > sort word
+						<input id="sort" type="checkbox" checked > sort word
 					</label>
 					<label class="form-check-label">
-						<input id="unique" type="checkbox"> word unique
+						<input id="unique" type="checkbox" checked> word unique
 					</label>
 				</div>
 			
@@ -266,7 +261,7 @@ export class DashboardComponent implements OnInit {
 			preConfirm: () => {
 				var sort = (<HTMLInputElement>document.getElementById("sort")).checked;
 				var unique = (<HTMLInputElement>document.getElementById("unique")).checked;
-				console.log(">>> ", sort, unique)
+				// console.log(">>> ", sort, unique)
 
 				if (this.service.statusFilter && this.service.resultAfterFilter != null) {
 
@@ -278,23 +273,23 @@ export class DashboardComponent implements OnInit {
 						}
 
 					});
-					console.log("gen :",textList)
+					// console.log("gen :",textList)
 					if (unique) {
 						let set = new Set(textList)
 						textList = Array.from(set)
-						console.log("uni :",textList)
+						// console.log("uni :",textList)
 					}
 					if (sort) {
-						let result = this.sortThaiDictionary(textList)
+						let result = this.service.sortThaiDictionary(textList)
 						textList = Array.from(result)
-						console.log("sort :",textList)
+						// console.log("sort :",textList)
 
 					}
 
 					// write content
 					let text = '';
 					textList.forEach(word => {
-						console.log(">>> word :",word)
+						// console.log(">>> word :",word)
 						text += word + "\n"
 					});
 
@@ -425,25 +420,29 @@ export class DashboardComponent implements OnInit {
 	}
 
 
+
 	downloadContent(name, content) {
 		const atag = document.createElement('a');
 		const file = new Blob([content], { type: 'text/plain' });
 		atag.href = URL.createObjectURL(file);
+		console.log()
 		atag.download = name;
 		atag.click();
-		this.modelDailog.fire({
-			icon: 'success',
-			title: 'Download successfully'
-		})
+
+		// this.modelDailog.fire({
+		// 	icon: 'success',
+		// 	title: 'Start Download'
+		// })
 	}
 
-	check = false
-	iCheck = !this.check
+	
+	iCheck = !this.service.checkAll_glexService
 	checkAll() {
+		this.service.statusFilter = false
 		for (const i in this.service.filterWord) {
-			this.service.filterWord[i].status = this.check
+			this.service.filterWord[i].status = this.service.checkAll_glexService
 		}
-		this.check = !this.check
+		this.service.checkAll_glexService = !this.service.checkAll_glexService
 	}
 
 }
