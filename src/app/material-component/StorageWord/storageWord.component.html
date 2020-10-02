@@ -77,7 +77,7 @@
                         <input matInput placeholder="Search for a word" [(ngModel)]="service.prefix" (keyup.enter)="service.search(service.prefix)">
                     </mat-form-field>
                     <button *ngIf="service.prefix.trim() != ''" mat-raised-button color="primary"
-                        (click)="service.search(service.prefix)">Filter</button>
+                        (click)="service.search(service.prefix)">Search</button>
 
                     <hr>
                     <span *ngIf="service.lengSearch >=0">ผลลัพธ์ทั้งหมด {{service.lengSearch}} รายการ</span>
