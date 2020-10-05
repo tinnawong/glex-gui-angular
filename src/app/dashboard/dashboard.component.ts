@@ -56,6 +56,7 @@ export class DashboardComponent implements OnInit {
 	upload(idx: number, file: File): void {
 		const formData: FormData = new FormData();
 		formData.append('file', file);
+		formData.append('useDict', this.service.dictCurrent);
 		this.http.post(this.service.urlGlexSegment, formData, {
 			// reportProgress: true,
 		}).subscribe(data => {

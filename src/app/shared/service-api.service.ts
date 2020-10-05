@@ -3,7 +3,7 @@ import { OnInit } from '@angular/core';
 import { interval } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { trim } from 'jquery';
-import { ContextMenu, MenuEventArgs, MenuItemModel,BeforeOpenCloseMenuEventArgs } from '@syncfusion/ej2-navigations';
+import { ContextMenu, MenuEventArgs, MenuItemModel, BeforeOpenCloseMenuEventArgs } from '@syncfusion/ej2-navigations';
 import { enableRipple } from '@syncfusion/ej2-base';
 import { ContextMenuComponent } from '@syncfusion/ej2-angular-navigations';
 import Swal from "sweetalert2"
@@ -18,17 +18,21 @@ export class ServiceApiService implements OnInit {
   ngOnInit() {
   }
 
+  // config server port
   urlglexMainService = 'http://localhost:5200/'
   urlGlexSegment = this.urlglexMainService + 'glexSegment'
   urlPingMainServer = this.urlglexMainService + "ping"
-  urlGlexServer = 'http://localhost:8080/ping'
-  urlGetDictName = 'http://localhost:8080/get-dict-name'
-  urlGetSearch = 'http://localhost:8080/search'
+
+  urlGlexServer = 'http://localhost:8080/'
+  urlPingGlexServer = this.urlGlexServer+'ping'
+  urlGetSearch = this.urlGlexServer+'search'
   statusMainServer = false
   stautsGlexServer = false
+
   dictGlexName: any
   separatorSegment = false
   valueSeparatorSegment = "|"
+
   // for check number request
   numFileSend
   uploadStatus = true
@@ -38,9 +42,33 @@ export class ServiceApiService implements OnInit {
   listSearch
   lengSearch
   searchRespones
+  clearListSearch() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Do you want to clear list search?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.listSearch = null
+        this.lengSearch = null
+        this.searchRespones = null
 
-  // coppy to store
-  storeCoppy = [
+        Swal.fire(
+          'Clear!',
+          'Your list search has been clear.',
+          'success'
+        )
+      }
+    })
+
+  }
+
+  // coppy to store (clipboard)
+  storageCoppy = [
     { name: "UNKNOWN", status: true, words: new Set(), text: "คำที่ไม่รู้จัก" },
     { name: "KNOWN", status: false, words: new Set(), text: "คำที่รู้จัก" },
     { name: "ENGLISH", status: false, words: new Set(), text: "ภาษาอังกฤษ" },
@@ -48,6 +76,32 @@ export class ServiceApiService implements OnInit {
     { name: "SPECIAL", status: false, words: new Set(), text: "อักขระพิเศษ" },
     { name: "GROUP", status: false, words: new Set(), text: "เครื่องหมาย" },
   ]
+
+  clearStorageCoppy() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Do you want to clear the storage coppy?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.storageCoppy.forEach(element => {
+          element.words.clear()
+        });
+
+        Swal.fire(
+          'Clear!',
+          'Your storage coppy has been clear.',
+          'success'
+        )
+      }
+    })
+
+  }
+
   public menuItems1: MenuItemModel[] = [
     {
       id: "0",
@@ -65,77 +119,77 @@ export class ServiceApiService implements OnInit {
     },
   ];
 
-  
-	checkReadyToAdd(){
-		var currentWordFilter =""
-		var count = 0
-		var result = []
-		this.filterWord.forEach(word => {
-			if(word["status"]){
-				if(count==0){
-					currentWordFilter = word['name']
-					count ++
-				}else{
-					count = -1 
-				}
-			}	
-		});
-		if(count == -1 || count ==0){
-			result.push(false)
-			result.push("")
-			// console.log(result)
-			return result
-		}
-		result.push(true)
-		result.push(currentWordFilter)
-		// console.log(result)
-		return result
-  }
-  
-  public cmenu: ContextMenuComponent;
-  
-  itemSelect(args: MenuEventArgs): void {
-		if (args.item.id === "0") {
-			document.getSelection().toString()
-			document.execCommand("copy");
-		}
-		else if (args.item.id === "1") {
-			const check = this.checkReadyToAdd()
-      if(document.getSelection().toString().trim() == ""){
-          // alert("Please select a word for coppy to storage")
-          Swal.fire({
-            icon: 'info',
-            title: "Null Word",
-            text: "Please select a word for coppy to storage",
-            confirmButtonText: "OK"
-          })
+
+  checkReadyToAdd() {
+    var currentWordFilter = ""
+    var count = 0
+    var result = []
+    this.filterWord.forEach(word => {
+      if (word["status"]) {
+        if (count == 0) {
+          currentWordFilter = word['name']
+          count++
+        } else {
+          count = -1
+        }
       }
-      else{
-        if(check[0]){
-          var i =0
-          for (const word of this.storeCoppy) {
-            if(word['name'] == check[1]){
-              this.storeCoppy[i]["words"].add(document.getSelection().toString().trim())
+    });
+    if (count == -1 || count == 0) {
+      result.push(false)
+      result.push("")
+      // console.log(result)
+      return result
+    }
+    result.push(true)
+    result.push(currentWordFilter)
+    // console.log(result)
+    return result
+  }
+
+  public cmenu: ContextMenuComponent;
+
+  itemSelect(args: MenuEventArgs): void {
+    if (args.item.id === "0") {
+      document.getSelection().toString()
+      document.execCommand("copy");
+    }
+    else if (args.item.id === "1") {
+      const check = this.checkReadyToAdd()
+      if (document.getSelection().toString().trim() == "") {
+        // alert("Please select a word for coppy to storage")
+        Swal.fire({
+          icon: 'info',
+          title: "Null Word",
+          text: "Please select a word for coppy to storage",
+          confirmButtonText: "OK"
+        })
+      }
+      else {
+        if (check[0]) {
+          var i = 0
+          for (const word of this.storageCoppy) {
+            if (word['name'] == check[1]) {
+              this.storageCoppy[i]["words"].add(document.getSelection().toString().trim())
               // console.log(this.storeCoppy)
               break
             }
             i++
           }
         }
-        else{
+        else {
           // alert("Please choose a filter word, befor coppy word")
           Swal.fire({
-						icon: 'info',
-						title: "Choose a filter",
-						text: "Please choose a filter word, befor coppy word",
-						confirmButtonText: "OK"
-					})
+            icon: 'info',
+            title: "Choose a filter",
+            text: "Please choose a filter word, befor coppy word",
+            confirmButtonText: "OK"
+          })
         }
       }
-      
-		}
+
+    }
   }
-  
+
 
   pingMainServer_() {
     this.http.get(this.urlPingMainServer,).subscribe(
@@ -150,10 +204,18 @@ export class ServiceApiService implements OnInit {
     );
   }
 
+  allDict
+  dictCurrent: string
+  selectDict
+  assignVarlue = false
   pingGlexServer_() {
-    this.http.get(this.urlGlexServer,).subscribe(
+    this.http.get(this.urlPingGlexServer,).subscribe(
       data => {
-        // console.log(data)
+        if (data['status'] == "ok" && !this.assignVarlue ) {
+          this.allDict = data["allDict"]
+          this.dictCurrent = data["dictCurrent"]
+          this.assignVarlue = true
+        }
         this.stautsGlexServer = true
       },
       err => {
@@ -224,13 +286,13 @@ export class ServiceApiService implements OnInit {
 
   // for get text segment after choose file from wep page
   chooseSegment: Array<any> = null
+
   // for get text segment after filter and number of word segment
   resultAfterFilter = []
   numSeg = 0
   numSegSumSpace = 0
 
   statusFilter = false
-
   fileNameOpenCurent = 'text'
 
   filterWord = [
@@ -273,11 +335,17 @@ export class ServiceApiService implements OnInit {
 
   checkAll_storageWord = true
   checkAll_glexService = false
-  
+
   sortThaiDictionary = list => {
-		const newList = [...list]
-		newList.sort((a, b) => a.localeCompare(b, 'th'))
-		return newList
-	}
+    const newList = [...list]
+    newList.sort((a, b) => a.localeCompare(b, 'th'))
+    return newList
+  }
+
+  changeDict() {
+
+  }
+
+
 
 }

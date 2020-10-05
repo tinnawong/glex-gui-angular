@@ -8,7 +8,7 @@ export interface Menu {
 }
 
 const MENUITEMS = [
-  { state: 'glex', name: 'Glex Service', type: 'link', icon: 'receipt' },
+  { state: 'glex', name: 'Segment Service', type: 'link', icon: 'receipt' },
   { state: 'storage-word', type: 'link', name: 'Storage Word', icon: 'storage' },
   // { state: 'grid', type: 'link', name: 'Grid List', icon: 'view_comfy' },
   // { state: 'lists', type: 'link', name: 'Lists', icon: 'view_list' },
