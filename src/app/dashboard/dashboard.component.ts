@@ -205,6 +205,7 @@ export class DashboardComponent implements OnInit {
 			this.service.fileNameOpenCurent = fileName
 			for (let data of this.service.results) {
 				if (data.fileName == fileName) {
+					console.log(">>> ++",data)
 					this.service.chooseSegment = data.results
 					this.service.dictGlexName = data.dictName
 					this.filter()
