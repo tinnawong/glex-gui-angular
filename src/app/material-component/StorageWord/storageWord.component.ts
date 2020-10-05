@@ -20,8 +20,8 @@ export class StorageWord implements OnInit {
 
 	iCheck = !this.service.checkAll_storageWord
 	checkAll() {
-		for (const i in this.service.storeCoppy) {
-			this.service.storeCoppy[i].status = this.service.checkAll_storageWord
+		for (const i in this.service.storageCoppy) {
+			this.service.storageCoppy[i].status = this.service.checkAll_storageWord
 		}
 		this.service.checkAll_storageWord = !this.service.checkAll_storageWord
 	}
@@ -51,7 +51,7 @@ export class StorageWord implements OnInit {
 
 				var textList = []
 				// generate list data
-				this.service.storeCoppy.forEach(items => {
+				this.service.storageCoppy.forEach(items => {
 					if (items.status) {
 						items.words.forEach(word => {
 							textList.push(String(word))

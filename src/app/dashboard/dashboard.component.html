@@ -32,7 +32,17 @@
                         <mat-card-subtitle>Please choose your text file or drag and drop (.txt)</mat-card-subtitle>
                     </div>
                 </div>
-
+                <div>
+                    <mat-form-field class="w-25 pl-2">
+                        <mat-label>Dictionary name</mat-label>
+                        <mat-select [(value)]="service.dictCurrent">
+                            <mat-option [(value)]="dictName"   (change)="service.changeDict()" *ngFor="let dictName of service.allDict;">
+                                {{dictName}}
+                            </mat-option>
+                            
+                        </mat-select>
+                    </mat-form-field>
+                </div>
                 <label class="btn-sm  border" style="background-color: #dee2e6">
                     <input type="file" accept=".txt" multiple (change)="selectFiles($event)" />
                 </label>
@@ -43,6 +53,7 @@
                         <span class="sr-only">Loading...</span>
                     </div>
                 </button>
+                
             </mat-card-content>
         </mat-card> 
 
@@ -56,11 +67,11 @@
             <mat-card-content class="mt-0">
                 <mat-nav-list>
                     <div *ngFor="let data of service.results;">
-                        <mat-list-item (click)="openFileSegment(data.fileName)">
+                        <mat-list-item (click)="openFileSegment(data.fileName)" class="text-wrap">
                             <button mat-icon-button>
                                 <mat-icon>description</mat-icon>
                             </button>
-                            <a>{{ data.fileName }}</a>
+                            <a>{{ data.fileName}}</a>
                         </mat-list-item>
                     </div>
                 </mat-nav-list>
