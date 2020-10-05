@@ -6,6 +6,9 @@ import { trim } from 'jquery';
 import { ContextMenu, MenuEventArgs, MenuItemModel,BeforeOpenCloseMenuEventArgs } from '@syncfusion/ej2-navigations';
 import { enableRipple } from '@syncfusion/ej2-base';
 import { ContextMenuComponent } from '@syncfusion/ej2-angular-navigations';
+import Swal from "sweetalert2"
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -99,7 +102,13 @@ export class ServiceApiService implements OnInit {
 		else if (args.item.id === "1") {
 			const check = this.checkReadyToAdd()
       if(document.getSelection().toString().trim() == ""){
-          alert("Please select a word for coppy word")
+          // alert("Please select a word for coppy to storage")
+          Swal.fire({
+            icon: 'info',
+            title: "Null Word",
+            text: "Please select a word for coppy to storage",
+            confirmButtonText: "OK"
+          })
       }
       else{
         if(check[0]){
@@ -114,7 +123,13 @@ export class ServiceApiService implements OnInit {
           }
         }
         else{
-          alert("Please choose a filter word, befor coppy word")
+          // alert("Please choose a filter word, befor coppy word")
+          Swal.fire({
+						icon: 'info',
+						title: "Choose a filter",
+						text: "Please choose a filter word, befor coppy word",
+						confirmButtonText: "OK"
+					})
         }
       }
       
@@ -162,11 +177,23 @@ export class ServiceApiService implements OnInit {
         },
         err => {
           console.log(">>> err :", err)
+          Swal.fire({
+            icon: 'error',
+            title: "Error To Search",
+            text: "Can not search, please check your service",
+            confirmButtonText: "OK"
+          })
         }
       );
     }
     else {
-      alert("Please enter your text for search.")
+      // alert("Please enter your text for search.")
+      Swal.fire({
+        icon: 'info',
+        title: "Null Word",
+        text: "Please enter your text for search",
+        confirmButtonText: "OK"
+      })
     }
   }
 
@@ -244,6 +271,13 @@ export class ServiceApiService implements OnInit {
   }
 
 
-
+  checkAll_storageWord = true
+  checkAll_glexService = false
+  
+  sortThaiDictionary = list => {
+		const newList = [...list]
+		newList.sort((a, b) => a.localeCompare(b, 'th'))
+		return newList
+	}
 
 }
