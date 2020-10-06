@@ -12,9 +12,10 @@ export class StorageWord implements OnInit {
 
 	constructor(private service: ServiceApiService) { }
 
-
+	
 	ngOnInit() {
-
+		this.service.pingMainServer_()
+		this.service.pingGlexServer_()
 	}
 
 

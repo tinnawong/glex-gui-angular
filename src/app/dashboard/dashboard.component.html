@@ -36,7 +36,7 @@
                     <mat-form-field class="w-25 pl-2">
                         <mat-label>Dictionary name</mat-label>
                         <mat-select [(value)]="service.dictCurrent">
-                            <mat-option [(value)]="dictName"   (change)="service.changeDict()" *ngFor="let dictName of service.allDict;">
+                            <mat-option [(value)]="dictName"  *ngFor="let dictName of service.allDict;">
                                 {{dictName}}
                             </mat-option>
                             
@@ -67,11 +67,11 @@
             <mat-card-content class="mt-0">
                 <mat-nav-list>
                     <div *ngFor="let data of service.results;">
-                        <mat-list-item (click)="openFileSegment(data.fileName)" class="text-wrap">
+                        <mat-list-item (click)="openFileSegment(data.fileName)">
                             <button mat-icon-button>
                                 <mat-icon>description</mat-icon>
                             </button>
-                            <a>{{ data.fileName}}</a>
+                            <a  class="d-inline-block text-truncate">{{ data.fileName}}</a>
                         </mat-list-item>
                     </div>
                 </mat-nav-list>
@@ -168,11 +168,11 @@
             <mat-card-content class="mt-0">
                 <mat-nav-list>
                     <div *ngFor="let data of service.results;">
-                        <mat-list-item  (click)="openFileSegment(data.fileName)">
+                        <mat-list-item  (click)="openFileSegment(data.fileName)"  matTooltip="{{data.fileName}}" [matTooltipPosition]="positionTooltip">
                             <button mat-icon-button>
                                 <mat-icon>description</mat-icon>
                             </button>
-                            <a>{{ data.fileName }}</a>
+                            <a  class="d-inline-block text-truncate">{{ data.fileName}}</a>
                         </mat-list-item>
                     </div>
                 </mat-nav-list>

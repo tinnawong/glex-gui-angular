@@ -30,6 +30,7 @@ export class DashboardComponent implements OnInit {
 			this.service.pingGlexServer_()
 		});
 	}
+	positionTooltip= "before"
 	modelDailog = Swal.mixin({
 		toast: true,
 		position: 'bottom-start',
@@ -101,7 +102,14 @@ export class DashboardComponent implements OnInit {
 			if (this.selectedFiles.length != null) {
 				if(this.service.uploadStatus){
 					this.service.uploadStatus = false
-					this.service.results = []					
+					// reset value to show
+					this.service.results = []
+					this.service.resultAfterFilter =[]
+					this.service.numSeg = 0
+					this.service.numSegSumSpace = 0
+					this.service.statusFilter = false
+					this.service.fileNameOpenCurent = 'text'
+					this.service.resetSesultsNumberType()
 					for (let i = 0; i < this.selectedFiles.length; i++) {
 						this.upload(i, this.selectedFiles[i]);
 					}

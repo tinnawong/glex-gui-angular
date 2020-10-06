@@ -9,7 +9,7 @@ export const AppRoutes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: '/glex',
+        redirectTo: '/segment',
         pathMatch: 'full'
       },
       {
@@ -18,7 +18,7 @@ export const AppRoutes: Routes = [
           () => import('./material-component/material.module').then(m => m.MaterialComponentsModule)
       },
       {
-        path: 'glex',
+        path: 'segment',
         loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
       }
     ]

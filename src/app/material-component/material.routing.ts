@@ -20,7 +20,7 @@ import { from } from 'rxjs';
 
 export const MaterialRoutes: Routes = [
   {
-    path: 'storage-word',
+    path: 'clipboard',
     component: StorageWord
   },
   {

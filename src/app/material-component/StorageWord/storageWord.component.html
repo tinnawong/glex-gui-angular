@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <section>
-                    <mat-card-title>Storage Word</mat-card-title>
+                    <mat-card-title>Clipboard</mat-card-title>
                     <mat-card-subtitle>This word created from glex service page according to word type.</mat-card-subtitle>
                     <div>
                         <mat-checkbox class="mr-1" [(ngModel)] = "iCheck"
@@ -41,7 +41,7 @@
                         <button mat-raised-button color="primary" class="float-right mt-3 mr-2"
                           (click)="writeFileText()" >Download Text</button>
                           <button mat-raised-button color="primary" class="float-right mt-3 mr-2"
-                          (click)="service.clearStorageCoppy()" >Clear Storage Coppy</button>
+                          (click)="service.clearStorageCoppy()" >Clear Clipboard</button>
                     </section>
 
                     <hr>
@@ -74,18 +74,28 @@
                 <div class="ml-4">
                     <mat-card-title>Search</mat-card-title>
                     <mat-card-subtitle>You can search word or prefix</mat-card-subtitle>
+                    <div>
+                        <mat-form-field class="w-50">
+                            <mat-label>Current dictionary</mat-label>
+                            <mat-select [(value)]="service.dictCurrent">
+                                <mat-option [(value)]="dictName" *ngFor="let dictName of service.allDict;">
+                                    {{dictName}}
+                                </mat-option>                                
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
                     <mat-form-field class="w-50">
-                        <mat-label>Search</mat-label>
+                        <mat-label>Search</mat-label>                        
                         <input matInput placeholder="Search for a word" [(ngModel)]="service.prefix" (keyup.enter)="service.search(service.prefix)">
                     </mat-form-field>
                     <button *ngIf="service.prefix.trim() != ''" mat-raised-button color="primary" class="ml-1"
                         (click)="service.search(service.prefix)">Search</button>
                     
-                        <button *ngIf="service.listSearch && service.lengSearch >=0" mat-raised-button color="primary" class="ml-1"
+                        <button *ngIf="service.listSearch && service.lengSearch >0" mat-raised-button color="primary" class="ml-1"
                         (click)="service.clearListSearch()">Clear result</button>
 
                     <hr>
-                    <span *ngIf="service.lengSearch">ผลลัพธ์ทั้งหมด {{service.lengSearch}} รายการ</span>
+                    <span *ngIf="service.lengSearch>=0 && service.lengSearch!=null">ผลลัพธ์ทั้งหมด {{service.lengSearch}} รายการ</span>
                     <mat-nav-list class="pl-3">
                         <li *ngFor="let item of service.listSearch let i = index">
                             {{item}}

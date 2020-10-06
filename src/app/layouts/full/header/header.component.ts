@@ -5,7 +5,7 @@ import { data } from 'jquery';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: []
+  styleUrls: ['./header.component.scss']
 })
 export class AppHeaderComponent implements OnInit  {
 

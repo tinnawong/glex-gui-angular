@@ -16,6 +16,7 @@ export class ServiceApiService implements OnInit {
 
   constructor(private http: HttpClient) { }
   ngOnInit() {
+    
   }
 
   // config server port
@@ -80,7 +81,7 @@ export class ServiceApiService implements OnInit {
   clearStorageCoppy() {
     Swal.fire({
       title: 'Are you sure?',
-      text: "Do you want to clear the storage coppy?",
+      text: "Do you want to clear the clipboard?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -94,7 +95,7 @@ export class ServiceApiService implements OnInit {
 
         Swal.fire(
           'Clear!',
-          'Your storage coppy has been clear.',
+          'Your clipboard has been clear.',
           'success'
         )
       }
@@ -109,7 +110,7 @@ export class ServiceApiService implements OnInit {
     },
     {
       id: "1",
-      text: 'Copy to storage',
+      text: 'Copy to clipboard',
     }
   ];
   public menuItems2: MenuItemModel[] = [
@@ -156,11 +157,11 @@ export class ServiceApiService implements OnInit {
     else if (args.item.id === "1") {
       const check = this.checkReadyToAdd()
       if (document.getSelection().toString().trim() == "") {
-        // alert("Please select a word for coppy to storage")
+        // alert("Please select a word for coppy to clipboard")
         Swal.fire({
           icon: 'info',
           title: "Null Word",
-          text: "Please select a word for coppy to storage",
+          text: "Please select a word for coppy to clipboard",
           confirmButtonText: "OK"
         })
       }
@@ -227,13 +228,12 @@ export class ServiceApiService implements OnInit {
 
   search(prefix: string) {
     if (trim(prefix) != "") {
-      this.http.get(this.urlGetSearch, { params: { prefix: prefix } }).subscribe(
+      this.http.get(this.urlGetSearch, { params: { prefix: prefix,useDict: this.dictCurrent } }).subscribe(
         data => {
           if (data["status"] == 'ok') {
             this.searchRespones = data
             this.listSearch = data["results"]
             this.lengSearch = data["numResults"]
-            // console.log(this.listSearch)
           }
 
         },
@@ -341,11 +341,5 @@ export class ServiceApiService implements OnInit {
     newList.sort((a, b) => a.localeCompare(b, 'th'))
     return newList
   }
-
-  changeDict() {
-
-  }
-
-
 
 }
