@@ -390,6 +390,7 @@ export class DashboardComponent implements OnInit {
 				</head><body>
 			`
 			html += `
+			<div>NLP Tools version : <b>`+ this.service.programeVersion + `</b></div>` + `
 			<div>file name <b>`+ this.service.fileNameOpenCurent + `</b></div>` + `
 			<div>Using <b>`+ this.service.dictGlexName + `</b> dictionary</div>` + `
 			<div>จำนวนคำทั้งหมดไม่รวมเว้นวรรค <b>`+ this.service.numSeg + `</b> คำ</div>` + `

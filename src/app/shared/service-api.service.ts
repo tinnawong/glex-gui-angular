@@ -18,7 +18,7 @@ export class ServiceApiService implements OnInit {
   ngOnInit() {
     
   }
-
+  programeVersion = "1.0.1"
   // config server port
   urlglexMainService = 'http://localhost:5200/'
   urlGlexSegment = this.urlglexMainService + 'glexSegment'
