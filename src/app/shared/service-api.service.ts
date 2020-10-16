@@ -8,7 +8,6 @@ import { enableRipple } from '@syncfusion/ej2-base';
 import { ContextMenuComponent } from '@syncfusion/ej2-angular-navigations';
 import Swal from "sweetalert2"
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -18,15 +17,15 @@ export class ServiceApiService implements OnInit {
   ngOnInit() {
     
   }
-  programeVersion = "1.0.1"
+  programeVersion = ""
   // config server port
   urlglexMainService = 'http://localhost:5200/'
-  urlGlexSegment = this.urlglexMainService + 'glexSegment'
-  urlPingMainServer = this.urlglexMainService + "ping"
+  urlGlexSegment = this.urlglexMainService + 'npltools/segment'
+  urlPingMainServer = this.urlglexMainService + "npltools/ping"
 
   urlGlexServer = 'http://localhost:8080/'
-  urlPingGlexServer = this.urlGlexServer+'ping'
-  urlGetSearch = this.urlGlexServer+'search'
+  urlPingGlexServer = this.urlGlexServer+'glex/ping'
+  urlGetSearch = this.urlGlexServer+'glex/search'
   statusMainServer = false
   stautsGlexServer = false
 
@@ -196,6 +195,7 @@ export class ServiceApiService implements OnInit {
     this.http.get(this.urlPingMainServer,).subscribe(
       data => {
         // console.log(data)
+        this.programeVersion = data["nlpToolsVersion"]
         this.statusMainServer = true
       },
       err => {
