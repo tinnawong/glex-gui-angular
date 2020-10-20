@@ -7,7 +7,7 @@ import { ContextMenu, MenuEventArgs, MenuItemModel, BeforeOpenCloseMenuEventArgs
 import { enableRipple } from '@syncfusion/ej2-base';
 import { ContextMenuComponent } from '@syncfusion/ej2-angular-navigations';
 import Swal from "sweetalert2"
-
+import { environment } from './../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
@@ -19,13 +19,14 @@ export class ServiceApiService implements OnInit {
   }
   programeVersion = ""
   // config server port
-  urlglexMainService = 'http://localhost:5200/'
-  urlGlexSegment = this.urlglexMainService + 'npltools/segment'
-  urlPingMainServer = this.urlglexMainService + "npltools/ping"
+  urlglexMainService = environment.urlglexMainService
+  urlGlexSegment = this.urlglexMainService + environment.urlGlexSegment
+  urlPingMainServer = this.urlglexMainService + environment.urlPingMainServer
 
-  urlGlexServer = 'http://localhost:8080/'
-  urlPingGlexServer = this.urlGlexServer+'glex/ping'
-  urlGetSearch = this.urlGlexServer+'glex/search'
+  urlGlexServer = environment.urlGlexServer
+  urlPingGlexServer = this.urlGlexServer+environment.urlPingGlexServer
+  urlGetSearch = this.urlGlexServer+environment.urlGetSearch
+
   statusMainServer = false
   stautsGlexServer = false
 
