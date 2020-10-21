@@ -359,7 +359,7 @@ export class DashboardComponent implements OnInit {
 				text += String(key)+","+String(value)+"\n"
 			} 
 			console.log(text)
-			this.downloadContent(this.service.fileNameOpenCurent + ".txt", text)
+			this.downloadContent(this.service.fileNameOpenCurent + "(word frequency).txt", text)
 		} else {
 			// alert("Please choose file and filter befor create file!!")
 			Swal.fire({
