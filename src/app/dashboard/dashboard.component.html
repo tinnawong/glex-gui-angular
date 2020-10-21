@@ -36,26 +36,27 @@
                     <mat-form-field class="w-25 pl-2">
                         <mat-label>Dictionary name</mat-label>
                         <mat-select [(value)]="service.dictCurrent">
-                            <mat-option [(value)]="dictName"  *ngFor="let dictName of service.allDict;">
+                            <mat-option [(value)]="dictName" *ngFor="let dictName of service.allDict;">
                                 {{dictName}}
                             </mat-option>
-                            
+
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <label class="btn-sm  border" style="background-color: #dee2e6">
-                    <input type="file" accept=".txt" multiple (change)="selectFiles($event)" />
+                    <label class="btn-sm  border" style="background-color: #dee2e6">
+                    <input type="file" accept=".txt" class="text-truncate" multiple (change)="selectFiles($event)" />
                 </label>
-                <button *ngIf="selectedFiles && (selectedFiles.length>0) && service.uploadStatus" mat-raised-button color="primary"
-                    (click)="uploadFiles()">Upload</button>
+                
+                <button *ngIf="selectedFiles && (selectedFiles.length>0) && service.uploadStatus" mat-raised-button
+                    color="primary" (click)="uploadFiles()">Upload</button>
                 <button *ngIf="!service.uploadStatus" mat-raised-button color="primary" (click)="uploadFiles()">
                     <div class="spinner-border text-light" role="status">
                         <span class="sr-only">Loading...</span>
                     </div>
                 </button>
-                
+
             </mat-card-content>
-        </mat-card> 
+        </mat-card>
 
         <!-- side output file -->
         <mat-card class="d-block d-xl-none">
@@ -71,13 +72,13 @@
                             <button mat-icon-button>
                                 <mat-icon>description</mat-icon>
                             </button>
-                            <a  class="d-inline-block text-truncate">{{ data.fileName}}</a>
+                            <a class="d-inline-block text-truncate">{{ data.fileName}}</a>
                         </mat-list-item>
                     </div>
                 </mat-nav-list>
             </mat-card-content>
         </mat-card>
-        
+
         <mat-card>
             <mat-card-content>
                 <div class="d-flex flex-wrap">
@@ -98,8 +99,8 @@
                 <section class="example-section ml-3">
                     <section class="example-section">
                         <div>
-                            <mat-checkbox class="mr-1" [(ngModel)] = "iCheck"
-                                (click)="checkAll()">Check All</mat-checkbox>
+                            <mat-checkbox class="mr-1" [(ngModel)]="iCheck" (click)="checkAll()">Check All
+                            </mat-checkbox>
                         </div>
                         <span *ngFor="let item of service.filterWord  let i = index">
                             <mat-checkbox class="mr-1" [(ngModel)]="service.filterWord[i].status"
@@ -130,13 +131,15 @@
 
                         <button *ngIf="service.statusFilter" mat-raised-button style="background: #28a745;"
                             class="float-right mt-3 mr-1 " (click)="writeFileText()">Download Text</button>
+                        <button *ngIf="service.statusFilter" mat-raised-button style="background: #28a745;"
+                            class="float-right mt-3 mr-1 " (click)="writeFileTextFrequency()">Word Frequency</button>
 
 
                     </section>
                     <hr>
                 </section>
 
-                <div id="target">  
+                <div id="target">
                     <span *ngFor="let item of service.resultAfterFilter  let i = index">
                         <!-- ย่อหน้า -->
                         <span *ngIf="i==0" class="pl-lg-5"></span>
@@ -144,7 +147,8 @@
                         <span *ngIf="service.separatorSegment">{{service.valueSeparatorSegment}}</span>
                     </span>
                 </div>
-                <ejs-contextmenu id='contextmenu'  target='#target' [items]='service.menuItems1'  (select)="service.itemSelect($event)"></ejs-contextmenu>
+                <ejs-contextmenu id='contextmenu' target='#target' [items]='service.menuItems1'
+                    (select)="service.itemSelect($event)"></ejs-contextmenu>
 
 
                 <!-- {{service.chooseSegment}}
@@ -168,11 +172,12 @@
             <mat-card-content class="mt-0">
                 <mat-nav-list>
                     <div *ngFor="let data of service.results;">
-                        <mat-list-item  (click)="openFileSegment(data.fileName)"  matTooltip="{{data.fileName}}" [matTooltipPosition]="positionTooltip">
+                        <mat-list-item (click)="openFileSegment(data.fileName)" matTooltip="{{data.fileName}}"
+                            [matTooltipPosition]="positionTooltip">
                             <button mat-icon-button>
                                 <mat-icon>description</mat-icon>
                             </button>
-                            <a  class="d-inline-block text-truncate">{{ data.fileName}}</a>
+                            <a class="d-inline-block text-truncate">{{ data.fileName}}</a>
                         </mat-list-item>
                     </div>
                 </mat-nav-list>

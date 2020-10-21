@@ -8,6 +8,8 @@ import { ContextMenu, MenuEventArgs, MenuItemModel } from '@syncfusion/ej2-navig
 import { enableRipple } from '@syncfusion/ej2-base';
 import Swal from "sweetalert2"
 import { async } from '@angular/core/testing';
+import { map } from 'jquery';
+import { stringToFileBuffer } from '@angular-devkit/core/src/virtual-fs/host';
 
 @Component({
 	selector: 'app-dashboard',
@@ -213,7 +215,7 @@ export class DashboardComponent implements OnInit {
 			this.service.fileNameOpenCurent = fileName
 			for (let data of this.service.results) {
 				if (data.fileName == fileName) {
-					console.log(">>> ++",data)
+					// console.log(">>> ++",data)
 					this.service.chooseSegment = data.results
 					this.service.dictGlexName = data.dictName
 					this.filter()
@@ -318,6 +320,54 @@ export class DashboardComponent implements OnInit {
 
 
 
+
+	}
+
+	writeFileTextFrequency(){
+		if (this.service.statusFilter && this.service.resultAfterFilter != null) {
+			var textList = []
+			// generate list data
+			this.service.resultAfterFilter.forEach(element => {
+				if ((element["setColor"] != "notShow") && (element.data[0].trim() != "")) {
+					textList.push(String(element.data[0]))
+				}
+
+			});
+
+			if (1) {
+				let result = this.service.sortThaiDictionary(textList)
+				textList = Array.from(result)
+				// console.log("sort :",textList)
+
+			}
+
+			let textFrequency = new Map()
+			textList.forEach(word => {
+				if(textFrequency.has(word)){
+					let fre = textFrequency.get(word)
+					textFrequency.set(word,fre+1)
+
+				}else{
+					textFrequency.set(word,1)
+				}
+			});
+
+			// write content
+			let text = '';
+			for (let [key, value] of textFrequency) {
+				console.log(key, value); //"Lokesh" 37 "Raj" 35 "John" 40
+				text += String(key)+","+String(value)+"\n"
+			} 
+			console.log(text)
+			this.downloadContent(this.service.fileNameOpenCurent + ".txt", text)
+		} else {
+			// alert("Please choose file and filter befor create file!!")
+			Swal.fire({
+				icon: 'info',
+				text: "Please choose file and filter befor create file!!",
+				confirmButtonText: "OK"
+			})
+		}
 
 	}
 
@@ -436,7 +486,6 @@ export class DashboardComponent implements OnInit {
 		const atag = document.createElement('a');
 		const file = new Blob([content], { type: 'text/plain' });
 		atag.href = URL.createObjectURL(file);
-		console.log()
 		atag.download = name;
 		atag.click();
 
