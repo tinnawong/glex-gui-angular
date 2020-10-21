@@ -132,9 +132,7 @@
                         <button *ngIf="service.statusFilter" mat-raised-button style="background: #28a745;"
                             class="float-right mt-3 mr-1 " (click)="writeFileText()">Download Text</button>
                         <button *ngIf="service.statusFilter" mat-raised-button style="background: #28a745;"
-                            class="float-right mt-3 mr-1 " (click)="writeFileTextFrequency()">Word Frequency</button>
-
-
+                            class="float-right mt-3 mr-1 " (click)="writeFileTextFrequency()">Download Word Frequency</button>
                     </section>
                     <hr>
                 </section>
@@ -147,8 +145,8 @@
                         <span *ngIf="service.separatorSegment">{{service.valueSeparatorSegment}}</span>
                     </span>
                 </div>
-                <ejs-contextmenu id='contextmenu' target='#target' [items]='service.menuItems1'
-                    (select)="service.itemSelect($event)"></ejs-contextmenu>
+                <!-- <ejs-contextmenu id='contextmenu' target='#target' [items]='service.menuItems1'
+                    (select)="service.itemSelect($event)"></ejs-contextmenu> -->
 
 
                 <!-- {{service.chooseSegment}}
