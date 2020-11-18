@@ -1,0 +1,93 @@
+<div fxLayout="row wrap">
+    <!-- column -->
+    <div fxFlex.gt-lg="100" fxFlex.gt-md="100" fxFlex.gt-xs="100" fxFlex="100">
+        <mat-card>
+            <mat-card-content>
+                <div class="clearfix">
+                    <div class="float-right">
+
+                        <div *ngIf="service.statusMainServer ; else statusMainFalse" class="text-success-d">*status main
+                            service</div>
+                        <ng-template #statusMainFalse>
+                            <div class="text-danger">*status main service</div>
+                        </ng-template>
+
+                        <div *ngIf="service.stautsGlexServer ; else statusGlexFalse" class="text-success-d">*status glex
+                            service</div>
+                        <ng-template #statusGlexFalse>
+                            <div class="text-danger">*status glex service</div>
+                        </ng-template>
+                    </div>
+                </div>
+                <section>
+                    <div class="d-flex flex-wrap">
+                        <div>
+                            <mat-card-title>Input Text File</mat-card-title>
+                            <mat-card-subtitle>Please choose your text file or drag and drop (.txt)</mat-card-subtitle>
+                        </div>
+                    </div>
+
+                    <label class="btn-sm  border w-50 " style="background-color: #dee2e6">
+                        <input type="file" accept=".txt" class="text-truncate" multiple
+                            (change)="selectFiles($event)" />
+                    </label>
+                    <button  mat-raised-button
+                        color="primary" >Upload</button>
+                    <button *ngIf="" mat-raised-button color="primary">
+                        <div class="spinner-border text-light" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </button>
+
+
+                    <div>
+                        <mat-form-field class="w-25 mr-4">
+                            <mat-label>File Type</mat-label>
+                            <mat-select [(value)]="service.wordFrequency.current.fileType">
+                                <mat-option [(value)]="type.key"
+                                    *ngFor="let type of service.wordFrequency.fileType | keyvalue; ">
+                                    {{type.value}}
+                                </mat-option>
+
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field class="w-25 mr-4">
+                            <mat-label>Segmentation Library</mat-label>
+                            <mat-select [(value)]="service.wordFrequency.current.segmentLibrary">
+                                <mat-option [(value)]="lib" *ngFor="let lib of service.wordFrequency.segmentLibrary;">
+                                    {{lib}}
+                                </mat-option>
+
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field *ngIf="service.wordFrequency.current.segmentLibrary=='glex'" class="w-25">
+                            <mat-label>The dict to use</mat-label>
+                            <mat-select [(value)]="service.wordFrequency.current.glexDict">
+                                <mat-option [(value)]="dict" *ngFor="let dict of service.allDict;">
+                                    {{dict}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+                </section>
+            </mat-card-content>
+        </mat-card>
+
+    </div>
+
+
+
+    <!-- <div fxFlex.gt-lg="33" fxFlex.gt-md="33" fxFlex.gt-xs="100" fxFlex="100"> -->
+    <!-- side output file -->
+    <!-- <mat-card >
+            <mat-card-content>
+              
+            </mat-card-content>
+   
+        </mat-card> -->
+    <!-- </div> -->
+
+</div>
