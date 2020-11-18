@@ -16,12 +16,17 @@ import { TooltipComponent } from './tooltip/tooltip.component';
 import { SnackbarComponent } from './snackbar/snackbar.component';
 import { SliderComponent } from './slider/slider.component';
 import { SlideToggleComponent } from './slide-toggle/slide-toggle.component';
+import { WordFrequencyComponent } from './word-frequency/word-frequency.component';
 import { from } from 'rxjs';
 
 export const MaterialRoutes: Routes = [
   {
     path: 'clipboard',
     component: StorageWord
+  },
+  {
+    path: 'word-frequency',
+    component: WordFrequencyComponent
   },
   {
     path: 'button',

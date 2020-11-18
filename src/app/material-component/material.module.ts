@@ -34,6 +34,7 @@ import { SlideToggleComponent } from './slide-toggle/slide-toggle.component';
 import { StorageWord } from './StorageWord/storageWord.component';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { ContextMenuModule } from '@syncfusion/ej2-angular-navigations';
+import { WordFrequencyComponent } from './word-frequency/word-frequency.component';
 
 @NgModule({
   imports: [
@@ -68,7 +69,8 @@ import { ContextMenuModule } from '@syncfusion/ej2-angular-navigations';
     SnackbarComponent,
     SliderComponent,
     SlideToggleComponent,
-    StorageWord
+    StorageWord,
+    WordFrequencyComponent
   ]
 })
 export class MaterialComponentsModule {}

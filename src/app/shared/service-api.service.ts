@@ -343,4 +343,20 @@ export class ServiceApiService implements OnInit {
     return newList
   }
 
+  wordFrequency ={
+    fileType :{
+      1:"raw",
+      2:"pipe",
+      3:"line"
+    },
+    segmentLibrary :["deepcut","tltk","cutthai","glex"],
+    current:{
+      "glexDict":null,
+      "fileType":null,
+      "segmentLibrary":null
+    }
+  }
+  
+  
+
 }
