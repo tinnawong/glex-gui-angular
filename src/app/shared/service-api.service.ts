@@ -296,6 +296,21 @@ export class ServiceApiService implements OnInit {
   statusFilter = false
   fileNameOpenCurent = 'text'
 
+  // for count all file
+  totalWordUser = 0 // use UNKNOWN, KNOWN and ENGLISH
+  countTotal ={
+    0: 0,
+    1: 0,
+    3: 0,
+  }
+  resetCountTotal(){
+    this.countTotal ={
+      0: 0,
+      1: 0,
+      3: 0,
+    }
+  }
+
   filterWord = [
     { name: "UNKNOWN", status: true, text: "คำที่ไม่รู้จัก" },
     { name: "KNOWN", status: true, text: "คำที่รู้จัก" },
@@ -315,12 +330,12 @@ export class ServiceApiService implements OnInit {
   ]
 
   dictCode = {
-    0: "UNKNOWN",
-    1: "KNOWN",
-    3: "ENGLISH",
-    4: "DIGIT",
-    5: "SPECIAL",
-    6: "GROUP"
+    0: ["UNKNOWN","คำที่ไม่รู้จัก"],
+    1: ["KNOWN","คำที่รู้จัก"],
+    3: ["ENGLISH","ภาษาอังกฤษ"],
+    4: ["DIGIT","ตัวเลข"],
+    5: ["SPECIAL","อักขระพิเศษ"],
+    6: ["GROUP","เครื่องหมาย"]
   }
 
   colorDict = {

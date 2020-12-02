@@ -56,6 +56,18 @@ export class DashboardComponent implements OnInit {
 		this.selectedFiles = event.target.files;
 	}
 
+	countWord(){
+		for (let i = 0; i < this.service.results.length; i++) {
+			this.service.results[i]["results"].forEach(element => {
+				if(element[1]==0 || element[1]==1 || element[1]==3){
+					this.service.countTotal[element[1]]++
+					this.service.totalWordUser ++
+				}
+				
+			});
+		}
+	}
+
 	upload(idx: number, file: File): void {
 		const formData: FormData = new FormData();
 		formData.append('file', file);
@@ -66,7 +78,7 @@ export class DashboardComponent implements OnInit {
 			// console.log(data);
 			// var dicData: { [id: string]: any; } = {};
 			// dicData[file.name] = data;
-			if (data['status'] == 'ok') {
+			if (data['status'] == 'ok') {					
 				this.service.results.push(data)
 				// for check num respone to alert success
 				if (this.service.numFileSend > 0) {
@@ -87,6 +99,8 @@ export class DashboardComponent implements OnInit {
 			}
 			if (this.service.numFileSend <= 0) {
 				this.service.uploadStatus = true
+				this.countWord()
+				console.log(this.service.countTotal)
 				Swal.fire({
 					position: 'center',
 					icon: 'success',
@@ -112,6 +126,8 @@ export class DashboardComponent implements OnInit {
 					this.service.statusFilter = false
 					this.service.fileNameOpenCurent = 'text'
 					this.service.resetSesultsNumberType()
+					this.service.resetCountTotal()
+					this.service.totalWordUser = 0
 					for (let i = 0; i < this.selectedFiles.length; i++) {
 						this.upload(i, this.selectedFiles[i]);
 					}
@@ -171,7 +187,7 @@ export class DashboardComponent implements OnInit {
 			this.service.resetSesultsNumberType()
 
 			this.service.chooseSegment.forEach(data => {
-				let nameType = this.service.dictCode[data[1]]
+				let nameType = this.service.dictCode[data[1]][0]
 				// console.log(data,nameType)	
 				// console.log(">>>status :",this.searchStatus(nameType))
 				// console.log(">>>",this.searchStatus(nameType))
@@ -359,7 +375,7 @@ export class DashboardComponent implements OnInit {
 				text += String(key)+","+String(value)+"\n"
 			} 
 			console.log(text)
-			this.downloadContent(this.service.fileNameOpenCurent + "(word frequency).txt", text)
+			this.downloadContent(this.service.fileNameOpenCurent + "(word frequency).csv", text)
 		} else {
 			// alert("Please choose file and filter befor create file!!")
 			Swal.fire({
@@ -456,7 +472,7 @@ export class DashboardComponent implements OnInit {
 			</div>`
 			this.service.resultAfterFilter.forEach(element => {
 				if ((element["setColor"] != "notShow")) {
-					html += `<span class="TEXT-` + this.service.dictCode[element.data[1]] + `">` + element.data[0] + `</span>`
+					html += `<span class="TEXT-` + this.service.dictCode[element.data[1]][0] + `">` + element.data[0] + `</span>`
 				}
 				else {
 					html += `<span class="TEXT-notShow">` + element.data[0] + `</span>`
@@ -484,7 +500,7 @@ export class DashboardComponent implements OnInit {
 
 	downloadContent(name, content) {
 		const atag = document.createElement('a');
-		const file = new Blob([content], { type: 'text/plain' });
+		const file = new Blob(["\ufeff",content], { type: 'text/plain' });
 		atag.href = URL.createObjectURL(file);
 		atag.download = name;
 		atag.click();

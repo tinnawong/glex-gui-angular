@@ -21,9 +21,6 @@
                         <ng-template #statusGlexFalse>
                             <div class="text-danger">*status glex service</div>
                         </ng-template>
-
-
-
                     </div>
                 </div>
                 <div class="d-flex flex-wrap">
@@ -165,8 +162,13 @@
         <!-- side output file -->
         <mat-card class="d-none d-xl-block">
             <mat-card-content>
-                <mat-card-title>Output File</mat-card-title>
+                <mat-card-title>Output File2</mat-card-title>
                 <mat-card-subtitle>Select your output file to display content</mat-card-subtitle>
+                <div *ngIf="service.results.length>0 && service.uploadStatus ">
+                    <div  *ngFor="let item of service.countTotal | keyvalue">
+                        <span [style.color]="service.colorDict[service.dictCode[item.key][0]]">{{service.dictCode[item.key][1]}} : {{item.value}} ({{(item.value/service.totalWordUser)*100 | number:'0.0-2'}}%)</span>
+                  </div>
+                </div>
             </mat-card-content>
             <hr>
             <mat-card-content class="mt-0">

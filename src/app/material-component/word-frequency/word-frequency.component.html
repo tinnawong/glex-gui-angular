@@ -6,13 +6,13 @@
                 <div class="clearfix">
                     <div class="float-right">
 
-                        <div *ngIf="service.statusMainServer ; else statusMainFalse" class="text-success-d">*status main
+                        <div *ngIf="this.service.statusMainServer ; else statusMainFalse" class="text-success-d">*status main
                             service</div>
                         <ng-template #statusMainFalse>
                             <div class="text-danger">*status main service</div>
                         </ng-template>
 
-                        <div *ngIf="service.stautsGlexServer ; else statusGlexFalse" class="text-success-d">*status glex
+                        <div *ngIf="this.service.stautsGlexServer ; else statusGlexFalse" class="text-success-d">*status glex
                             service</div>
                         <ng-template #statusGlexFalse>
                             <div class="text-danger">*status glex service</div>
@@ -31,8 +31,7 @@
                         <input type="file" accept=".txt" class="text-truncate" multiple
                             (change)="selectFiles($event)" />
                     </label>
-                    <button  mat-raised-button
-                        color="primary" >Upload</button>
+                    <button  mat-raised-button color="primary" (click)="uploadFiles()">Upload</button>
                     <button *ngIf="" mat-raised-button color="primary">
                         <div class="spinner-border text-light" role="status">
                             <span class="sr-only">Loading...</span>
@@ -43,9 +42,9 @@
                     <div>
                         <mat-form-field class="w-25 mr-4">
                             <mat-label>File Type</mat-label>
-                            <mat-select [(value)]="service.wordFrequency.current.fileType">
+                            <mat-select [(value)]="this.service.wordFrequency.current.fileType">
                                 <mat-option [(value)]="type.key"
-                                    *ngFor="let type of service.wordFrequency.fileType | keyvalue; ">
+                                    *ngFor="let type of this.service.wordFrequency.fileType | keyvalue; ">
                                     {{type.value}}
                                 </mat-option>
 
@@ -54,18 +53,18 @@
 
                         <mat-form-field class="w-25 mr-4">
                             <mat-label>Segmentation Library</mat-label>
-                            <mat-select [(value)]="service.wordFrequency.current.segmentLibrary">
-                                <mat-option [(value)]="lib" *ngFor="let lib of service.wordFrequency.segmentLibrary;">
+                            <mat-select [(value)]="this.service.wordFrequency.current.segmentLibrary">
+                                <mat-option [(value)]="lib" *ngFor="let lib of this.service.wordFrequency.segmentLibrary;">
                                     {{lib}}
                                 </mat-option>
 
                             </mat-select>
                         </mat-form-field>
 
-                        <mat-form-field *ngIf="service.wordFrequency.current.segmentLibrary=='glex'" class="w-25">
+                        <mat-form-field *ngIf="this.service.wordFrequency.current.segmentLibrary=='glex'" class="w-25">
                             <mat-label>The dict to use</mat-label>
-                            <mat-select [(value)]="service.wordFrequency.current.glexDict">
-                                <mat-option [(value)]="dict" *ngFor="let dict of service.allDict;">
+                            <mat-select [(value)]="this.service.wordFrequency.current.glexDict">
+                                <mat-option [(value)]="dict" *ngFor="let dict of this.service.allDict;">
                                     {{dict}}
                                 </mat-option>
                             </mat-select>
