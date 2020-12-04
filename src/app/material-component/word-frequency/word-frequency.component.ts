@@ -27,12 +27,25 @@ export class WordFrequencyComponent implements OnInit {
         formData.append('files', this.selectedFiles[i]);
       }
       formData.append('fileType', this.service.wordFrequency.current.fileType);
-      formData.append('segmentLibrary', this.service.wordFrequency.current.segmentLibrary);
+      formData.append('typeOutput', this.service.wordFrequency.current.typeOutput);
+      formData.append('librarySegment', this.service.wordFrequency.current.segmentLibrary);
       formData.append('glexDict', this.service.wordFrequency.current.glexDict);
 
       this.http.post(this.service.urlglexMainService + "npltools/frequency", formData, {
       }).subscribe(data => {
-
+        if (data["results"].length > 0) {
+          for (let i in data["results"]) {
+            this.service.downloadContent("test.csv", data["results"][i])
+          }
+        }
+        else{
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "No file for download",
+            confirmButtonText: "OK"
+          })
+        }
       });
     } else {
       console.log("file emty")

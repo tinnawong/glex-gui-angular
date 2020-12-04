@@ -321,7 +321,7 @@ export class DashboardComponent implements OnInit {
 						text += word + "\n"
 					});
 
-					this.downloadContent(this.service.fileNameOpenCurent + ".txt", text)
+					this.service.downloadContent(this.service.fileNameOpenCurent + ".txt", text)
 				} else {
 					// alert("Please choose file and filter befor create file!!")
 					Swal.fire({
@@ -375,7 +375,7 @@ export class DashboardComponent implements OnInit {
 				text += String(key)+","+String(value)+"\n"
 			} 
 			console.log(text)
-			this.downloadContent(this.service.fileNameOpenCurent + "(word frequency).csv", text)
+			this.service.downloadContent(this.service.fileNameOpenCurent + "(word frequency).csv", text)
 		} else {
 			// alert("Please choose file and filter befor create file!!")
 			Swal.fire({
@@ -483,7 +483,7 @@ export class DashboardComponent implements OnInit {
 
 			});
 			html += '</body></html>'
-			this.downloadContent(this.service.fileNameOpenCurent + ".html", html)
+			this.service.downloadContent(this.service.fileNameOpenCurent + ".html", html)
 		}
 		else {
 			// alert("Please choose file and filter befor create file!!")
@@ -498,18 +498,7 @@ export class DashboardComponent implements OnInit {
 
 
 
-	downloadContent(name, content) {
-		const atag = document.createElement('a');
-		const file = new Blob(["\ufeff",content], { type: 'text/plain' });
-		atag.href = URL.createObjectURL(file);
-		atag.download = name;
-		atag.click();
 
-		// this.modelDailog.fire({
-		// 	icon: 'success',
-		// 	title: 'Start Download'
-		// })
-	}
 
 	
 	iCheck = !this.service.checkAll_glexService

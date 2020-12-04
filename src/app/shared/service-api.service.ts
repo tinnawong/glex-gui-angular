@@ -359,18 +359,24 @@ export class ServiceApiService implements OnInit {
   }
 
   wordFrequency ={
-    fileType :{
-      1:"raw",
-      2:"pipe",
-      3:"line"
-    },
+    fileType :["raw","pipe","line"],
+    typeOutpu:["1","2","3"],
     segmentLibrary :["deepcut","tltk","cutthai","glex"],
     current:{
       "glexDict":null,
-      "fileType":null,
-      "segmentLibrary":null
+      "fileType":"raw",
+      "segmentLibrary":"tltk",
+      "typeOutput":"1"
     }
   }
+
+  downloadContent(name, content) {
+		const atag = document.createElement('a');
+		const file = new Blob(["\ufeff",content], { type: 'text/plain' });
+		atag.href = URL.createObjectURL(file);
+		atag.download = name;
+		atag.click();
+	}
   
   
 

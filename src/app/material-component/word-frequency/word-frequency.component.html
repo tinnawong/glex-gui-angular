@@ -43,13 +43,24 @@
                         <mat-form-field class="w-25 mr-4">
                             <mat-label>File Type</mat-label>
                             <mat-select [(value)]="this.service.wordFrequency.current.fileType">
-                                <mat-option [(value)]="type.key"
-                                    *ngFor="let type of this.service.wordFrequency.fileType | keyvalue; ">
-                                    {{type.value}}
+                                <mat-option [(value)]="type"
+                                    *ngFor="let type of this.service.wordFrequency.fileType; ">
+                                    {{type}}
                                 </mat-option>
 
                             </mat-select>
                         </mat-form-field>
+
+                        <mat-form-field class="w-25 mr-4">
+                            <mat-label>Type Output</mat-label>
+                            <mat-select [(value)]="this.service.wordFrequency.current.typeOutput">
+                                <mat-option [(value)]="type" *ngFor="let type of this.service.wordFrequency.typeOutpu;">
+                                    {{type}}
+                                </mat-option>
+
+                            </mat-select>
+                        </mat-form-field>
+
 
                         <mat-form-field class="w-25 mr-4">
                             <mat-label>Segmentation Library</mat-label>
@@ -60,6 +71,7 @@
 
                             </mat-select>
                         </mat-form-field>
+                        
 
                         <mat-form-field *ngIf="this.service.wordFrequency.current.segmentLibrary=='glex'" class="w-25">
                             <mat-label>The dict to use</mat-label>
