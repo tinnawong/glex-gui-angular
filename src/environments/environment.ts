@@ -6,8 +6,8 @@
 export const environment = {
   production: false,
   urlglexMainService : 'http://localhost:5200/',
-  urlGlexSegment:"npltools/segment",
-  urlPingMainServer:"npltools/ping",
+  urlGlexSegment:"nlptools/segment",
+  urlPingMainServer:"nlptools/ping",
   urlGlexServer:'http://localhost:8080/',
   urlPingGlexServer:'glex/ping',
   urlGetSearch:"glex/search"
