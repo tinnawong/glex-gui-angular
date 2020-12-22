@@ -360,13 +360,13 @@ export class ServiceApiService implements OnInit {
 
   wordFrequency ={
     fileType :["raw","pipe","line"],
-    typeOutpu:["1","2","3"],
+    typeOutpu:{"fileandfolder":"file and folder","file":"file","folder":"folder"},
     segmentLibrary :["deepcut","tltk","cutthai","glex"],
     current:{
       "glexDict":null,
       "fileType":"raw",
       "segmentLibrary":"tltk",
-      "typeOutput":"1"
+      "typeOutput":"fileandfolder"
     }
   }
 

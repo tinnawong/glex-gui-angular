@@ -31,12 +31,12 @@
                         <input type="file" accept=".txt" class="text-truncate" multiple
                             (change)="selectFiles($event)" />
                     </label>
-                    <button  mat-raised-button color="primary" (click)="uploadFiles()">Upload</button>
-                    <button *ngIf="" mat-raised-button color="primary">
+                    <button *ngIf="selectedFiles != null"  mat-raised-button style="background: #28a745;" (click)="uploadFiles()">Upload</button>
+                    <!-- <button *ngIf="" mat-raised-button color="primary">
                         <div class="spinner-border text-light" role="status">
                             <span class="sr-only">Loading...</span>
                         </div>
-                    </button>
+                    </button> -->
 
 
                     <div class="mt-1">
@@ -53,9 +53,9 @@
 
                         <mat-form-field class="w-25 mr-4">
                             <mat-label>Type Output</mat-label>
-                            <mat-select [(value)]="this.service.wordFrequency.current.typeOutput">
-                                <mat-option [(value)]="type" *ngFor="let type of this.service.wordFrequency.typeOutpu;">
-                                    {{type}}
+                            <mat-select [(value)]="this.service.wordFrequency.current.typeOutput" >
+                                <mat-option [(value)]="type.key" *ngFor="let type of this.service.wordFrequency.typeOutpu | keyvalue; ">
+                                    {{type.value}}
                                 </mat-option>
 
                             </mat-select>

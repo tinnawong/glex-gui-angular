@@ -31,11 +31,12 @@ export class WordFrequencyComponent implements OnInit {
       formData.append('librarySegment', this.service.wordFrequency.current.segmentLibrary);
       formData.append('glexDict', this.service.wordFrequency.current.glexDict);
 
-      this.http.post(this.service.urlglexMainService + "npltools/frequency", formData, {
+      this.http.post(this.service.urlglexMainService + "nlptools/frequency", formData, {
       }).subscribe(data => {
         if (data["results"].length > 0) {
+          console.log(data)
           for (let i in data["results"]) {
-            this.service.downloadContent("test.csv", data["results"][i])
+            this.service.downloadContent(data["results"][i][0]+".csv", data["results"][i][1])
           }
         }
         else{
