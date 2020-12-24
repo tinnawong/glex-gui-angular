@@ -367,7 +367,8 @@ export class ServiceApiService implements OnInit {
       "fileType":"raw",
       "segmentLibrary":"tltk",
       "typeOutput":"fileandfolder"
-    }
+    },
+    statusWaitRespone :false,
   }
 
   downloadContent(name, content) {

@@ -6,13 +6,15 @@
                 <div class="clearfix">
                     <div class="float-right">
 
-                        <div *ngIf="this.service.statusMainServer ; else statusMainFalse" class="text-success-d">*status main
+                        <div *ngIf="this.service.statusMainServer ; else statusMainFalse" class="text-success-d">*status
+                            main
                             service</div>
                         <ng-template #statusMainFalse>
                             <div class="text-danger">*status main service</div>
                         </ng-template>
 
-                        <div *ngIf="this.service.stautsGlexServer ; else statusGlexFalse" class="text-success-d">*status glex
+                        <div *ngIf="this.service.stautsGlexServer ; else statusGlexFalse" class="text-success-d">*status
+                            glex
                             service</div>
                         <ng-template #statusGlexFalse>
                             <div class="text-danger">*status glex service</div>
@@ -31,20 +33,21 @@
                         <input type="file" accept=".txt" class="text-truncate" multiple
                             (change)="selectFiles($event)" />
                     </label>
-                    <button *ngIf="selectedFiles != null"  mat-raised-button style="background: #28a745;" (click)="uploadFiles()">Upload</button>
-                    <!-- <button *ngIf="" mat-raised-button color="primary">
+                    <button *ngIf="selectedFiles != null && !service.wordFrequency.statusWaitRespone" mat-raised-button
+                        color="primary" (click)="uploadFiles()">Upload</button>
+                    <button *ngIf="service.wordFrequency.statusWaitRespone" (click)="uploadFiles()" mat-raised-button
+                        color="primary">
                         <div class="spinner-border text-light" role="status">
                             <span class="sr-only">Loading...</span>
                         </div>
-                    </button> -->
+                    </button>
 
 
                     <div class="mt-1">
                         <mat-form-field class="w-25 mr-4">
                             <mat-label>File Type</mat-label>
                             <mat-select [(value)]="this.service.wordFrequency.current.fileType">
-                                <mat-option [(value)]="type"
-                                    *ngFor="let type of this.service.wordFrequency.fileType; ">
+                                <mat-option [(value)]="type" *ngFor="let type of this.service.wordFrequency.fileType; ">
                                     {{type}}
                                 </mat-option>
 
@@ -53,8 +56,9 @@
 
                         <mat-form-field class="w-25 mr-4">
                             <mat-label>Type Output</mat-label>
-                            <mat-select [(value)]="this.service.wordFrequency.current.typeOutput" >
-                                <mat-option [(value)]="type.key" *ngFor="let type of this.service.wordFrequency.typeOutpu | keyvalue; ">
+                            <mat-select [(value)]="this.service.wordFrequency.current.typeOutput">
+                                <mat-option [(value)]="type.key"
+                                    *ngFor="let type of this.service.wordFrequency.typeOutpu | keyvalue; ">
                                     {{type.value}}
                                 </mat-option>
 
@@ -65,13 +69,14 @@
                         <mat-form-field class="w-25 mr-4">
                             <mat-label>Segmentation Library</mat-label>
                             <mat-select [(value)]="this.service.wordFrequency.current.segmentLibrary">
-                                <mat-option [(value)]="lib" *ngFor="let lib of this.service.wordFrequency.segmentLibrary;">
+                                <mat-option [(value)]="lib"
+                                    *ngFor="let lib of this.service.wordFrequency.segmentLibrary;">
                                     {{lib}}
                                 </mat-option>
 
                             </mat-select>
                         </mat-form-field>
-                        
+
 
                         <mat-form-field *ngIf="this.service.wordFrequency.current.segmentLibrary=='glex'" class="w-25">
                             <mat-label>The dict to use</mat-label>
@@ -83,6 +88,12 @@
                         </mat-form-field>
 
                     </div>
+                </section>
+                <hr>
+                <section>
+                    <button *ngIf="resultFile != null" mat-raised-button style="background: #28a745;"
+                        (click)="download()">Download</button>
+                        
                 </section>
             </mat-card-content>
         </mat-card>
