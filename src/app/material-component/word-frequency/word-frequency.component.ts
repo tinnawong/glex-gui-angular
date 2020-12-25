@@ -33,6 +33,7 @@ export class WordFrequencyComponent implements OnInit {
         for (let i = 0; i < this.selectedFiles.length; i++) {
           formData.append('files', this.selectedFiles[i]);
         }
+        formData.append('corpusName', this.service.wordFrequency.corpusName);
         formData.append('fileType', this.service.wordFrequency.current.fileType);
         formData.append('typeOutput', this.service.wordFrequency.current.typeOutput);
         formData.append('librarySegment', this.service.wordFrequency.current.segmentLibrary);
@@ -85,7 +86,9 @@ export class WordFrequencyComponent implements OnInit {
   }
 
   download(){
-      
+      this.resultFile.forEach(f => {
+        this.service.downloadContent(f[0]+".csv",f[1])
+      });
   }
 
 

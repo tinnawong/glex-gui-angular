@@ -359,6 +359,7 @@ export class ServiceApiService implements OnInit {
   }
 
   wordFrequency ={
+    corpusName:"",
     fileType :["raw","pipe","line"],
     typeOutpu:{"fileandfolder":"file and folder","file":"file","folder":"folder"},
     segmentLibrary :["deepcut","tltk","cutthai","glex"],
