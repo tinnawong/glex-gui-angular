@@ -13,8 +13,8 @@ import { stringToFileBuffer } from '@angular-devkit/core/src/virtual-fs/host';
 
 @Component({
 	selector: 'app-dashboard',
-	templateUrl: './dashboard.component.html',
-	styleUrls: ['./dashboard.component.scss']
+	templateUrl: './segment.component.html',
+	styleUrls: ['./segment.component.scss']
 })
 
 
@@ -32,7 +32,7 @@ export class DashboardComponent implements OnInit {
 			this.service.pingGlexServer_()
 		});
 	}
-	positionTooltip= "before"
+	positionTooltip = "before"
 	modelDailog = Swal.mixin({
 		toast: true,
 		position: 'bottom-start',
@@ -56,14 +56,15 @@ export class DashboardComponent implements OnInit {
 		this.selectedFiles = event.target.files;
 	}
 
-	countWord(){
+	// for count word all file 
+	countWord() {
 		for (let i = 0; i < this.service.results.length; i++) {
 			this.service.results[i]["results"].forEach(element => {
-				if(element[1]==0 || element[1]==1 || element[1]==3){
+				if (element[1] == 0 || element[1] == 1 || element[1] == 3) {
 					this.service.countTotal[element[1]]++
-					this.service.totalWordUser ++
+					this.service.totalWordUser++
 				}
-				
+
 			});
 		}
 	}
@@ -73,20 +74,15 @@ export class DashboardComponent implements OnInit {
 		formData.append('file', file);
 		formData.append('useDict', this.service.dictCurrent);
 		this.http.post(this.service.urlGlexSegment, formData, {
-			// reportProgress: true,
 		}).subscribe(data => {
-			// console.log(data);
-			// var dicData: { [id: string]: any; } = {};
-			// dicData[file.name] = data;
-			if (data['status'] == 'ok') {					
-				this.service.results.push(data)
+			console.log(data)
+			if (data['status'] == 'ok') {
+				this.service.results.push(data["result"])
 				// for check num respone to alert success
 				if (this.service.numFileSend > 0) {
 					this.service.numFileSend--
 				}
-			
 			} else {
-				// alert(data['message'])
 				if (this.service.numFileSend > 0) {
 					this.service.numFileSend--
 				}
@@ -97,30 +93,38 @@ export class DashboardComponent implements OnInit {
 					confirmButtonText: "OK"
 				})
 			}
+
 			if (this.service.numFileSend <= 0) {
 				this.service.uploadStatus = true
-				this.countWord()
-				console.log(this.service.countTotal)
-				Swal.fire({
-					position: 'center',
-					icon: 'success',
-					title: 'Successfully',
-					showConfirmButton: false,
-					timer: 1500,
-				})
+				if (data['status'] == 'ok') {
+					this.countWord()
+					Swal.fire({
+						position: 'center',
+						icon: 'success',
+						title: 'Successfully',
+						showConfirmButton: false,
+						timer: 1500,
+					})
+				} else {
+					Swal.fire({
+						icon: "error",
+						title: "Error!",
+						text: data['message'],
+						confirmButtonText: "OK"
+					})
+				}
 			}
-
 		});
 	}
 
 	uploadFiles(): void {
 		if (this.service.statusMainServer && this.service.stautsGlexServer) {
 			if (this.selectedFiles.length != null) {
-				if(this.service.uploadStatus){
+				if (this.service.uploadStatus) {
 					this.service.uploadStatus = false
 					// reset value to show
 					this.service.results = []
-					this.service.resultAfterFilter =[]
+					this.service.resultAfterFilter = []
 					this.service.numSeg = 0
 					this.service.numSegSumSpace = 0
 					this.service.statusFilter = false
@@ -133,7 +137,7 @@ export class DashboardComponent implements OnInit {
 					}
 					this.service.numFileSend = this.selectedFiles.length
 					// console.log(this.service.numFileSend)
-				}else{
+				} else {
 					Swal.fire({
 						icon: 'info',
 						title: "Please wait",
@@ -142,7 +146,6 @@ export class DashboardComponent implements OnInit {
 					})
 				}
 			} else {
-				// alert("Please choose file")
 				Swal.fire({
 					icon: 'info',
 					title: "Please choose file",
@@ -151,7 +154,6 @@ export class DashboardComponent implements OnInit {
 				})
 			}
 		} else {
-			// alert("Can not connect service")
 			Swal.fire({
 				icon: "error",
 				title: "Error!",
@@ -339,7 +341,7 @@ export class DashboardComponent implements OnInit {
 
 	}
 
-	writeFileTextFrequency(){
+	writeFileTextFrequency() {
 		if (this.service.statusFilter && this.service.resultAfterFilter != null) {
 			var textList = []
 			// generate list data
@@ -359,12 +361,12 @@ export class DashboardComponent implements OnInit {
 
 			let textFrequency = new Map()
 			textList.forEach(word => {
-				if(textFrequency.has(word)){
+				if (textFrequency.has(word)) {
 					let fre = textFrequency.get(word)
-					textFrequency.set(word,fre+1)
+					textFrequency.set(word, fre + 1)
 
-				}else{
-					textFrequency.set(word,1)
+				} else {
+					textFrequency.set(word, 1)
 				}
 			});
 
@@ -372,8 +374,8 @@ export class DashboardComponent implements OnInit {
 			let text = '';
 			for (let [key, value] of textFrequency) {
 				console.log(key, value); //"Lokesh" 37 "Raj" 35 "John" 40
-				text += String(key)+","+String(value)+"\n"
-			} 
+				text += String(key) + "," + String(value) + "\n"
+			}
 			console.log(text)
 			this.service.downloadContent(this.service.fileNameOpenCurent + "(word frequency).csv", text)
 		} else {
@@ -500,7 +502,7 @@ export class DashboardComponent implements OnInit {
 
 
 
-	
+
 	iCheck = !this.service.checkAll_glexService
 	checkAll() {
 		this.service.statusFilter = false

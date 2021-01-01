@@ -22,7 +22,7 @@ export class WordFrequencyComponent implements OnInit {
     this.selectedFiles = event.target.files;
   }
 
-  resultFile = null
+  
   uploadFiles() {
     if (!this.service.wordFrequency.statusWaitRespone) {
       if (this.selectedFiles.length > 0) {
@@ -43,11 +43,14 @@ export class WordFrequencyComponent implements OnInit {
         }).subscribe(data => {
           this.service.wordFrequency.statusWaitRespone = false
           if (data["results"].length > 0) {
-            this.resultFile = data["results"]
-            console.log(data)
-            // for (let i in data["results"]) {
-            //   this.service.downloadContent(data["results"][i][0]+".csv", data["results"][i][1])
-            // }
+            this.service.wordFrequency.resultFile = data["results"]
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Successfully',
+              showConfirmButton: false,
+              timer: 1500,
+            })
           }
           else {
             Swal.fire({
@@ -59,11 +62,10 @@ export class WordFrequencyComponent implements OnInit {
           }
         }, err => {
           this.service.wordFrequency.statusWaitRespone = false
-          console.log(err)
           Swal.fire({
             icon: "error",
             title: "Error!",
-            text: err.status+":"+err.statusText,
+            text: err.status + ":" + err.statusText,
             confirmButtonText: "OK"
           })
         });
@@ -85,10 +87,10 @@ export class WordFrequencyComponent implements OnInit {
     }
   }
 
-  download(){
-      this.resultFile.forEach(f => {
-        this.service.downloadContent(f[0]+".csv",f[1])
-      });
+  download() {
+    this.service.wordFrequency.resultFile.forEach(f => {
+      this.service.downloadContent(f[0] + ".csv", f[1])
+    });
   }
 
 

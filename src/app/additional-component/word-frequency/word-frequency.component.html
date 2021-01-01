@@ -97,12 +97,12 @@
                     </div>
                 </section>
                 <hr>
-                <section *ngIf="resultFile != null">
+                <section *ngIf="service.wordFrequency.resultFile != null">
                     <button  mat-raised-button style="background: #28a745;"
                         (click)="download()">Download</button>
-                    <span class="ml-2">ทั้งหมด <span> {{resultFile.length}}</span> ไฟล์</span>
+                    <span class="ml-2">ทั้งหมด <span> {{service.wordFrequency.resultFile.length}}</span> ไฟล์</span>
                     <mat-list>
-                        <mat-list-item *ngFor="let f of  resultFile">
+                        <mat-list-item *ngFor="let f of  service.wordFrequency.resultFile">
                             <mat-icon mat-list-icon>description</mat-icon>
                             <div mat-line>{{f[0]}}</div>
                         </mat-list-item>
@@ -113,17 +113,5 @@
         </mat-card>
 
     </div>
-
-
-
-    <!-- <div fxFlex.gt-lg="33" fxFlex.gt-md="33" fxFlex.gt-xs="100" fxFlex="100"> -->
-    <!-- side output file -->
-    <!-- <mat-card >
-            <mat-card-content>
-              
-            </mat-card-content>
-   
-        </mat-card> -->
-    <!-- </div> -->
 
 </div>

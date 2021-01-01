@@ -15,11 +15,11 @@ export const AppRoutes: Routes = [
       {
         path: '',
         loadChildren:
-          () => import('./material-component/material.module').then(m => m.MaterialComponentsModule)
+          () => import('./additional-component/additional.module').then(m => m.MaterialComponentsModule)
       },
       {
         path: 'segment',
-        loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
+        loadChildren: () => import('./segment/segment.module').then(m => m.DashboardModule)
       }
     ]
   }
